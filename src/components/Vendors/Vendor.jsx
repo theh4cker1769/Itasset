@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import VendorTable from "./VendorTable";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { API_BASE_URL } from './../../apiConfig';
 
 const Vendor = ({ sidebarOpen }) => {
   const [vendors, setVendors] = useState([]);
@@ -17,9 +18,9 @@ const Vendor = ({ sidebarOpen }) => {
 
   const fetchVendorData = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/vendors");
+      const response = await fetch(API_BASE_URL + "/api/vendors");
       const data = await response.json();
-      setVendors(data);
+      setVendors(data.vendors);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }

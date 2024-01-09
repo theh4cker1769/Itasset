@@ -71,3 +71,7 @@
 #pagi-product{
   float:right;
 }
+
+#edit_product .fa-trash {
+  cursor: pointer;
+}

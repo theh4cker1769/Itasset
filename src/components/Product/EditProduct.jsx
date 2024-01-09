@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link,useNavigate , useParams} from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import './Add_Product.css';
+import { API_BASE_URL } from './../../apiConfig';
 
 const EditProduct = ({ sidebarOpen }) => {
   const [productTypes, setProductTypes] = useState([]);
@@ -13,15 +14,16 @@ const EditProduct = ({ sidebarOpen }) => {
   const [CompanyId, setCompanyId] = useState([]);
   const navigate = useNavigate();
   const params = useParams();
+
   useEffect(() => {
     const fetchProductTypes = async () => {
       try {
-        const response = await fetch('https://apis.itassetmgt.com:8443/api/v1/producttype');
+        const response = await fetch(`${API_BASE_URL}/api/producttype`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setProductTypes(data);
+        setProductTypes(data.data);
       } catch (error) {
         console.error('Error fetching product types:', error);
       }
@@ -32,12 +34,12 @@ const EditProduct = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductCategories = async () => {
       try {
-        const response = await fetch('https://apis.itassetmgt.com:8443/api/v1/productcategories');
+        const response = await fetch(`${API_BASE_URL}/api/productCategory`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setProductCategories(data);
+        setProductCategories(data.data);
       } catch (error) {
         console.error('Error fetching product categories:', error);
       }
@@ -47,51 +49,52 @@ const EditProduct = ({ sidebarOpen }) => {
 
   const fetchProductsbyid = async () => {
     try {
-      const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/products/${params.id}`);
+      const response = await fetch(`${API_BASE_URL}/api/products/${params.id}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
       setProducts(data);
-      setProductCategory(data.product_category_id)
-      setProductType(data.product_type_id)
-      setProductName(data.product_name)
-      setManufacturer(data.manufacturer)
+      setProductCategory(data.data.product_category)
+      setProductType(data.data.product_type)
+      setProductName(data.data.product_name)
+      setManufacturer(data.data.manufacturer)
     } catch (error) {
       console.log("unsuccess");
     }
   };
- useEffect(()=>{
-  fetchProductsbyid();
- }, []);
 
- const updateProduct = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/product/${params.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        product_category_id: productCategory,
-        product_type_id: productType,
-        product_name: productName,
-        manufacturer: manufacturer,
-        company_id: CompanyId, // Include the existing company ID here
-      }),
-    });
+  useEffect(() => {
+    fetchProductsbyid();
+  }, []);
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok.");
+  const updateProduct = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/products/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product_category: productCategory,
+          // product_type: productType,
+          // product_name: productName,
+          // manufacturer: manufacturer
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      navigate("/product");
+    } catch (error) {
+      console.error("Error updating employee data:", error);
     }
+  };
 
-    navigate("/product");
-  } catch (error) {
-    console.error("Error updating employee data:", error);
-  }
-};
-
+  console.log("Product Category:", productCategory);
 
   return (
     <>
@@ -101,23 +104,23 @@ const EditProduct = ({ sidebarOpen }) => {
             <p className="addhead">Edit Product</p>
             <form>
               <div id="data">
-                  <label>Product Category</label>
-                  <br />
-                  <select className="form-control" value={productCategory}
-                    onChange={(e) => setProductCategory(parseInt(e.target.value, 10))}>
-                    <option value="">--Choose a Category--</option>
-                    {productCategories.map((product) => (
-                      <option key={product.id} value={product.id}>{product.category_name}</option>
-                    ))}
-                  </select>
+                <label>Product Category</label>
+                <br />
+                <select className="form-control" value={productCategory}
+                  onChange={(e) => setProductCategory(e.target.value, 10)}>
+                  <option value="">--Choose a Category--</option>
+                  {productCategories.map((product) => (
+                    <option key={product.id} value={product.ProductCategory}>{product.ProductCategory}</option>
+                  ))}
+                </select>
 
-                <div>
+                {/* <div>
                   <label>Product Type</label>
                   <select className="form-control" value={productType} onChange={(e) =>
-                     setProductType(parseInt(e.target.value,10))}>
+                    (setProductType(e.target.value))}>
                     <option value="">--Choose a Product Type--</option>
                     {productTypes.map((productType) => (
-                      <option key={productType.id} value={productType.id}>{productType.product_type}</option>
+                      <option key={productType.id} value={productType.product_type_name}>{productType.product_type_name}</option>
                     ))}
                   </select>
                 </div>
@@ -125,8 +128,8 @@ const EditProduct = ({ sidebarOpen }) => {
                 <div>
                   <label>Product Name</label>
                   <br />
-                  <input type="text" className="form-control" value={productName} 
-                   onChange={(e) => setProductName(e.target.value)} />
+                  <input type="text" className="form-control" value={productName}
+                    onChange={(e) => setProductName(e.target.value)} />
                 </div>
 
                 <div>
@@ -134,7 +137,7 @@ const EditProduct = ({ sidebarOpen }) => {
                   <br />
                   <input type="text" className="form-control" value={manufacturer}
                     onChange={(e) => setManufacturer(e.target.value)} />
-                </div>
+                </div> */}
 
                 <div className='d-flex gap-2 mt-3'>
                   <Link to="/Product" className="btn btn-dark" >Back</Link>

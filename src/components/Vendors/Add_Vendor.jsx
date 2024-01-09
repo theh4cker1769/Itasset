@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Vender_Form from "./Vendor_Form";
 import "../Vendors/Add_Vendor.css";
 import Swal from 'sweetalert2';
+import { API_BASE_URL } from './../../apiConfig';
 
 const Add_Vendor = () => {
   const [vendors, setVendors] = useState([]);
@@ -30,7 +31,7 @@ const Add_Vendor = () => {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchData("https://apis.itassetmgt.com:8443/api/v1/countries", setCountries);
     fetchData("https://apis.itassetmgt.com:8443/api/v1/states", setStates);
@@ -49,9 +50,9 @@ const Add_Vendor = () => {
       !address ||
       !description
     ) {
-Swal.fire({
-  title: 'All Fields are Required',
-})
+      Swal.fire({
+        title: 'All Fields are Required',
+      })
       return;
     }
 
@@ -67,9 +68,23 @@ Swal.fire({
       description: description,
     };
 
-    fetch("https://apis.itassetmgt.com:8443/api/v1/vendors", {
+    fetch(API_BASE_URL + "/api/vendor", {
       method: "POST",
-      body: JSON.stringify({ vendor: formData }),
+      body: JSON.stringify(
+        {
+          "vendor_name": "Sample hghVendor2",
+          "email": "sample2.vendhygyghor@example.com",
+          "phone": "1236565555",
+          "country": "india",
+          "state": "india",
+          "city": "San Francisco",
+          "zip_code": "94105",
+          "address": "123 Main Street",
+          "description": "A sample vendor for testing",
+          "user_id": 2,
+          "company_id": 1
+        }
+      ),
       headers: {
         "Content-Type": "application/json",
       },
@@ -104,32 +119,32 @@ Swal.fire({
       <main id="main" className="main">
         <section className="section">
           <div className="row">
-          <Vender_Form
-            countries={countries}
-            states={states}
-            cities={cities}
-            vendor_name={vendor_name}
-            setVendorName={setVendorName}
-            email={email}
-            setEmail={setEmail}
-            phone_number={phone_number}
-            setPhoneNumber={setPhoneNumber}
-            selectedCountry={selectedCountry}
-            setSelectedCountry={setSelectedCountry}
-            selectedState={selectedState}
-            setSelectedState={setSelectedState}
-            selectedCity={selectedCity}
-            setSelectedCity={setSelectedCity}
-            zip_code={zip_code}
-            setZipCode={setZipCode}
-            address={address}
-            setAddress={setAddress}
-            description={description}
-            setDescription={setDescription}
-            formSubmitted={formSubmitted}
-            handleSubmit={handleSubmit}
-           />
-          
+            <Vender_Form
+              countries={countries}
+              states={states}
+              cities={cities}
+              vendor_name={vendor_name}
+              setVendorName={setVendorName}
+              email={email}
+              setEmail={setEmail}
+              phone_number={phone_number}
+              setPhoneNumber={setPhoneNumber}
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
+              selectedState={selectedState}
+              setSelectedState={setSelectedState}
+              selectedCity={selectedCity}
+              setSelectedCity={setSelectedCity}
+              zip_code={zip_code}
+              setZipCode={setZipCode}
+              address={address}
+              setAddress={setAddress}
+              description={description}
+              setDescription={setDescription}
+              formSubmitted={formSubmitted}
+              handleSubmit={handleSubmit}
+            />
+
           </div>
         </section>
       </main>

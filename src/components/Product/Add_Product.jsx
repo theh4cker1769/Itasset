@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Add_Product.css";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { API_BASE_URL } from './../../apiConfig';
 
 const Add_Product = ({ sidebarOpen }) => {
   const [productTypes, setProductTypes] = useState([]);
@@ -15,14 +16,12 @@ const Add_Product = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductTypes = async () => {
       try {
-        const response = await fetch(
-          "https://apis.itassetmgt.com:8443/api/v1/producttype"
-        );
+        const response = await fetch(`${API_BASE_URL}/api/producttype`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setProductTypes(data);
+        setProductTypes(data.data);
       } catch (error) {
         console.error("Error fetching product types:", error);
       }
@@ -33,14 +32,12 @@ const Add_Product = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductCategories = async () => {
       try {
-        const response = await fetch(
-          "https://apis.itassetmgt.com:8443/api/v1/productcategories"
-        );
+        const response = await fetch(`${API_BASE_URL}/api/productCategory`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setProductCategories(data);
+        setProductCategories(data.data);
       } catch (error) {
         console.error("Error fetching product categories:", error);
       }
@@ -53,30 +50,30 @@ const Add_Product = ({ sidebarOpen }) => {
     console.log("Selected Product Category:", selectedValue);
     setProductCategory(selectedValue);
   };
-  
+
   const handleProductTypeChange = (e) => {
     const selectedValue = e.target.value;
     console.log("Selected Product Type:", selectedValue);
     setProductType(selectedValue);
   };
-  
+
 
   const postData = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/products",
+      const response = await fetch(API_BASE_URL + "/api/products",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            product_category_id: productCategory,
-            product_type_id: productType,
+            product_category: productCategory,
+            product_type: productType,
             product_name: productName,
             manufacturer: manufacturer,
-            company_id: 1,
-            is_active: true,
+            user_id: 2,
+            company_id: 2,
+            is_active: true
           }),
         }
       );
@@ -115,8 +112,8 @@ const Add_Product = ({ sidebarOpen }) => {
                   >
                     <option value="">--Choose a Category--</option>
                     {productCategories.map((product) => (
-                      <option key={product.id} value={product.id}>
-                        {product.category_name}
+                      <option key={product.id} value={product.ProductCategory}>
+                        {product.ProductCategory}
                       </option>
                     ))}
                   </select>
@@ -133,8 +130,8 @@ const Add_Product = ({ sidebarOpen }) => {
                   >
                     <option value="">--Choose a Product Type--</option>
                     {productTypes.map((productType) => (
-                      <option key={productType.id} value={productType.id}>
-                        {productType.product_type}
+                      <option key={productType.product_type_id} value={productType.product_type_name}>
+                        {productType.product_type_name}
                       </option>
                     ))}
                   </select>

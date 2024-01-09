@@ -5,6 +5,9 @@ import ProductThead from "./ProductThead";
 import ProductEntityshow from "./ProductEntityshow";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { API_BASE_URL } from './../../apiConfig';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const Product = ({ sidebarOpen }) => {
   const [products, setProducts] = useState([]);
@@ -17,7 +20,7 @@ const Product = ({ sidebarOpen }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/product-data");
+      const response = await fetch(API_BASE_URL + "/api/product-data");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -30,7 +33,7 @@ const Product = ({ sidebarOpen }) => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [products]);
 
   const handleCheckboxChange = (productId) => {
     setSelectedProducts((prevSelected) =>
@@ -57,15 +60,16 @@ const Product = ({ sidebarOpen }) => {
   };
 
   const handleDelete = async (id) => {
+
     try {
-      const response = await fetch(
-        `hhttps://apis.itassetmgt.com:8443/api/v1/product/destroy/${id}`,
+      const response = await fetch(API_BASE_URL + '/api/products/' + id,
         {
           method: "DELETE",
         }
       );
       if (response.ok) {
         // Remove the deleted product from state
+        console.log(id)
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== id)
         );
@@ -107,7 +111,7 @@ const Product = ({ sidebarOpen }) => {
     try {
       await Promise.all(
         selectedProducts.map((id) =>
-          fetch(`https://apis.itassetmgt.com:8443/api/v1/product/destroy/${id}`, {
+          fetch(API_BASE_URL + '/api/products/' + id, {
             method: "DELETE",
           })
         )
@@ -125,8 +129,7 @@ const Product = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/product/${id}`,
+      const response = await fetch(API_BASE_URL + '/api/products/' + id,
         {
           method: "PUT",
           headers: {
@@ -164,6 +167,34 @@ const Product = ({ sidebarOpen }) => {
   );
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const downloadExcel = () => {
+
+    const filteredData = products.map(item => ({
+      "Product Category": item.product_category,
+      "Product Type": item.product_type,
+      "Product Name": item.product_name,
+      "Manufacturer": item.manufacturer,
+    }));
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Convert the filtered JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Generate a buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Convert the buffer to a Blob
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+    // Use FileSaver to save the file
+    saveAs(blob, 'productData.xlsx');
+  }
+
   return (
     <>
       <main
@@ -192,10 +223,8 @@ const Product = ({ sidebarOpen }) => {
                     Add Product
                   </Link>
                 </button>
-                <button className="btn-vendor">
-                  <Link to="#" className="btn btn-dark" id="product_export">
-                    Export
-                  </Link>
+                <button className="btn btn-dark btn-vendor" onClick={downloadExcel}>
+                  Export
                 </button>
 
                 <button
@@ -233,13 +262,13 @@ const Product = ({ sidebarOpen }) => {
                   <ProductThead />
                   <tbody>
                     {currentProducts.map((product, index) => (
-                      <tr role="row" className="odd" key={product.id}>
+                      <tr role="row" className="odd" key={product.product_id}>
                         <td className="dt-body-center" tabIndex="0">
-                          <div key={product.id}>
+                          <div key={product.product_id}>
                             <input
                               type="checkbox"
-                              checked={selectedProducts.includes(product.id)}
-                              onChange={() => toggleSelect(product.id)}
+                              checked={selectedProducts.includes(product.product_id)}
+                              onChange={() => toggleSelect(product.product_id)}
                             />
                           </div>
                         </td>
@@ -255,9 +284,9 @@ const Product = ({ sidebarOpen }) => {
                               value={status}
                               handleCheckboxChange={handleCheckboxChange}
                               onClick={(e) =>
-                                handleToggle(product.id, e.target.checked)
+                                handleToggle(product.product_id, e.target.checked)
                               }
-                              id={`flexSwitchCheckChecked-${product.id}`}
+                              id={`flexSwitchCheckChecked-${product.product_id}`}
                               defaultChecked={product.is_active}
                             />
                           </div>
@@ -267,12 +296,12 @@ const Product = ({ sidebarOpen }) => {
                             className="d-flex justify-content-evenly"
                             id="edit_product"
                           >
-                            <Link to={`/editproduct/${product.id}`}>
+                            <Link to={`/editproduct/${product.product_id}`}>
                               <i className="fa-solid fa-pen-to-square" />
                             </Link>
                             <i
                               className="fa-solid fa-trash mt-1"
-                              onClick={() => confirm(product.id)}
+                              onClick={() => confirm(product.product_id)}
                             />
                           </div>
                         </td>
