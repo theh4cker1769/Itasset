@@ -4,6 +4,8 @@ import VendorTable from "./VendorTable";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { API_BASE_URL } from './../../apiConfig';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const Vendor = ({ sidebarOpen }) => {
   const [vendors, setVendors] = useState([]);
@@ -33,7 +35,7 @@ const Vendor = ({ sidebarOpen }) => {
         : [...prevSelected, vendorId]
     );
   };
-  const submit =(id)=>{
+  const submit = (id) => {
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Are you sure to do this.',
@@ -52,20 +54,20 @@ const Vendor = ({ sidebarOpen }) => {
     try {
       await Promise.all(
         selectedVendors.map((id) =>
-          fetch(`https://apis.itassetmgt.com:8443/api/v1/vendors/${id}`, {
+          fetch(`${API_BASE_URL}/api/vendors/${id}`, {
             method: "DELETE",
           })
         )
       );
       setVendors((prevVendors) =>
-        prevVendors.filter((vendor) => !selectedVendors.includes(vendor.id))
+        prevVendors.filter((vendor) => !selectedVendors.includes(vendor.vendor_id))
       );
       setSelectedVendors([]);
     } catch (error) {
       console.error(error);
     }
   };
-  const confirm =(id)=>{
+  const confirm = (id) => {
     confirmAlert({
       title: 'Confirm to delete',
       message: 'Are you sure to do this.',
@@ -82,11 +84,11 @@ const Vendor = ({ sidebarOpen }) => {
   }
   const handleDelete = async (id) => {
     try {
-      await fetch(`https://apis.itassetmgt.com:8443/api/v1/vendors/${id}`, {
+      await fetch(`${API_BASE_URL}/api/vendors/${id}`, {
         method: "DELETE",
       });
       setVendors((prevVendors) =>
-        prevVendors.filter((vendor) => vendor.id !== id)
+        prevVendors.filter((vendor) => vendor.vendor_id !== id)
       );
     } catch (error) {
       console.error(error);
@@ -95,7 +97,7 @@ const Vendor = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      await fetch(`https://apis.itassetmgt.com:8443/api/v1/vendors/${id}`, {
+      await fetch(`${API_BASE_URL}/api/vendors/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +106,7 @@ const Vendor = ({ sidebarOpen }) => {
       });
       setVendors((prevVendors) =>
         prevVendors.map((vendor) =>
-          vendor.id === id ? { ...vendor, is_active: newStatus } : vendor
+          vendor.vendor_id === id ? { ...vendor, is_active: newStatus } : vendor
         )
       );
     } catch (error) {
@@ -137,13 +139,41 @@ const Vendor = ({ sidebarOpen }) => {
     (_, i) => i + 1
   );
 
+  const downloadExcel = () => {
+
+    const filteredData = vendors.map(item => ({
+      "Vendor Name": item.vendor_name,
+      "Email": item.email,
+      "Phone no": item.phone,
+      "Description": item.description,
+    }));
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Convert the filtered JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Generate a buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Convert the buffer to a Blob
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+    // Use FileSaver to save the file
+    saveAs(blob, 'productData.xlsx');
+  }
+
   return (
     <div
       id="main"
       className={`main-content ${sidebarOpen ? "shift-right" : ""}`}
     >
       <main className="card p-0">
-        <section className="section">
+        <section className="section vendors-section">
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="title">
@@ -162,10 +192,8 @@ const Vendor = ({ sidebarOpen }) => {
                   Add New Vendor
                 </Link>
               </button>
-              <button className="btn-vendor">
-                <Link to="#" className="btn btn-success" id="Export">
-                  Export
-                </Link>
+              <button className="btn btn-dark btn-vendor btn-export" onClick={downloadExcel}>
+                Export
               </button>
               <button className="btn btn-primary"
                 id="delete"
@@ -240,9 +268,8 @@ const Vendor = ({ sidebarOpen }) => {
                       {pageNumbers.map((number) => (
                         <li
                           key={number}
-                          className={`page-item ${
-                            number === currentPage ? "active" : ""
-                          }`}
+                          className={`page-item ${number === currentPage ? "active" : ""
+                            }`}
                         >
                           <button className="page-link"
                             onClick={() => setCurrentPage(number)}

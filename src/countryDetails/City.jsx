@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-
+import { API_BASE_URL } from './../apiConfig';
 // import { List } from "react-virtualized";
 
 
-const CitySelect = ({ selectedCountryId, selectedStateId, onSelectCity }) => {
+const CitySelect = ({ selectedCountryId, selectedStateId, onSelectCity, selectedCity }) => {
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
@@ -14,9 +14,9 @@ const CitySelect = ({ selectedCountryId, selectedStateId, onSelectCity }) => {
           return;
         }
 
-        const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/cities?country_id=${selectedCountryId}&state_id=${selectedStateId}`);
+        const response = await fetch(`${API_BASE_URL}/api/state/${selectedStateId}`);
         const data = await response.json();
-        setCities(data);
+        setCities(data.data);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -26,12 +26,12 @@ const CitySelect = ({ selectedCountryId, selectedStateId, onSelectCity }) => {
   }, [selectedCountryId, selectedStateId]);
 
   return (
-    <select className="form-control" onChange={(e) => onSelectCity(e.target.value)}>
+    <select className="form-control" onChange={(e) => onSelectCity(e.target.value)} value={selectedCity}>
       <option>Select a City</option>
       {Array.isArray(cities) ? (
         cities.map((city) => (
           <option key={city.id} value={city.id}>
-            {city.city_name}
+            {city.name}
           </option>
         ))
       ) : (

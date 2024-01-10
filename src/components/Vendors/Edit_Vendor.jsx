@@ -75,22 +75,24 @@ const Edit_Vendor = () => {
               </div>
               <div className="col-md-6">
                 <label htmlFor="#">Country</label>
-                <CountrySelect onSelectCountry={setSelectedCountry} />
+                <CountrySelect onSelectCountry={setSelectedCountry} selectedCountry={selectedCountry} />
               </div>
               <div className="col-md-6">
                 <label htmlFor="#">State</label>
                 <StateSelect
-                    selectedCountryId={selectedCountry}
-                    onSelectState={setSelectedState}
-                  />
+                  selectedState={selectedState}
+                  selectedCountryId={selectedCountry}
+                  onSelectState={setSelectedState}
+                />
               </div>
               <div className="col-md-6">
                 <label htmlFor="#">City</label>
                 <CitySelect
-                    selectedCountryId={selectedCountry}
-                    selectedStateId={selectedState}
-                    onSelectCity={setSelectedCity}
-                  />
+                  selectedCity={selectedCity}
+                  selectedCountryId={selectedCountry}
+                  selectedStateId={selectedState}
+                  onSelectCity={setSelectedCity}
+                />
               </div>
               <div className="col-md-6">
                 <label htmlFor="#">Zip code</label>
@@ -109,7 +111,7 @@ const Edit_Vendor = () => {
                   className="form-control"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  ></textarea>
+                ></textarea>
               </div>
               <div className="col-md-6">
                 <label htmlFor="#">Description</label>
@@ -118,7 +120,7 @@ const Edit_Vendor = () => {
                   className="form-control"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  ></textarea>
+                ></textarea>
               </div>
             </div>
             <div className="bton">

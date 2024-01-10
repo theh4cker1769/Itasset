@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Vendor_details.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { API_BASE_URL } from './../../apiConfig';
 
 const Vendor_details = ({ sidebarOpen, match }) => {
   const params = useParams();
@@ -11,7 +12,7 @@ const Vendor_details = ({ sidebarOpen, match }) => {
   const [cityName, setCityName] = useState("");
 
   useEffect(() => {
-    const url = `https://apis.itassetmgt.com:8443/api/v1/vendors/${params.id}`;
+    const url = `${API_BASE_URL}/api/vendors/GetVendorById/${params.id}`;
     fetch(url)
       .then((response) => {
         if (response.ok) {
@@ -19,7 +20,7 @@ const Vendor_details = ({ sidebarOpen, match }) => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => setVendor(response))
+      .then((response) => setVendor(response.data))
       .catch(() => navigate("/vendor"));
   }, [params.id]);
 
@@ -95,7 +96,7 @@ const Vendor_details = ({ sidebarOpen, match }) => {
                   </tr>
                   <tr>
                     <th>Phone :</th>
-                    <td>{vendor.phone_number}</td>
+                    <td>{vendor.phone}</td>
                   </tr>
                   <tr>
                     <th>Contact Person :</th>

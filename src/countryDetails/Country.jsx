@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { API_BASE_URL } from './../apiConfig';
 
-const CountrySelect = ({ onSelectCountry }) => {
+const CountrySelect = ({ onSelectCountry, selectedCountry }) => {
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true); // New state for loading
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/countries");
+        const response = await fetch(`${API_BASE_URL}/api/countries`);
         const data = await response.json();
-        console.log(data); // Add this line to check data in console
-        setCountries(data);
+        setCountries(data.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching countries:", error);
@@ -23,7 +23,7 @@ const CountrySelect = ({ onSelectCountry }) => {
   
   return (
     <div>
-      <select className="form-control" onChange={(e) => onSelectCountry(e.target.value)}>
+      <select className="form-control" onChange={(e) => onSelectCountry(e.target.value)} value={selectedCountry}>
         <option value="">Select Here</option>
 
         {loading ? ( // Render loading state if still loading
@@ -32,7 +32,7 @@ const CountrySelect = ({ onSelectCountry }) => {
 
           countries.map((country) => (
             <option key={country.id} value={country.id}>
-              {country.country_name}
+              {country.name}
             </option>
           ))
         ) : (

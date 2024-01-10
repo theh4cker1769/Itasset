@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import { API_BASE_URL } from './../../apiConfig';
 
 const Edit_Form = () => {
   const [vendor, setVendors] = useState([]);
-  const [vendardata, setVendorData]= useState([]);
+  const [vendardata, setVendorData] = useState([]);
   const [vendor_name, setVendorName] = useState("");
   const [email, setEmail] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
@@ -38,7 +39,7 @@ const Edit_Form = () => {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/vendors");
+      const response = await fetch(API_BASE_URL + "/api/vendors");
       const data = await response.json();
       setVendors(data);
     } catch (error) {
@@ -49,21 +50,22 @@ const Edit_Form = () => {
   useEffect(() => {
     const fetchVendorData = async () => {
       try {
-        const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/vendors/${params.id}`);
+        const response = await fetch(`${API_BASE_URL}/api/vendors/GetVendorById/${params.id}`);
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
         const vendorData = await response.json();
-        setVendors(vendorData)
-        setVendorName(vendorData.vendor_name);
-        setEmail(vendorData.email);
-        setPhoneNumber(vendorData.phone_number);
-        setSelectedCountry(vendorData.country_id);
-        setSelectedState(vendorData.state_id);
-        setSelectedCity(vendorData.city_id);
-        setZipCode(vendorData.zip_code);
-        setAddress(vendorData.address);
-        setDescription(vendorData.description);
+        console.log("vendorData", vendorData.data);
+        setVendors(vendorData.data)
+        setVendorName(vendorData.data.vendor_name);
+        setEmail(vendorData.data.email);
+        setPhoneNumber(vendorData.data.phone);
+        setSelectedCountry(vendorData.data.country);
+        setSelectedState(vendorData.data.state);
+        setSelectedCity(vendorData.data.city);
+        setZipCode(vendorData.data.zip_code);
+        setAddress(vendorData.data.address);
+        setDescription(vendorData.data.description);
       } catch (error) {
         console.error("Error fetching vendor data:", error);
       }
@@ -76,7 +78,7 @@ const Edit_Form = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/vendors/${params.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/vendors/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -84,13 +86,15 @@ const Edit_Form = () => {
         body: JSON.stringify({
           vendor_name: vendor_name,
           email: email,
-          phone_number: phone_number,
-          country_id: selectedCountry,
-          state_id: selectedState,
-          city_id: selectedCity,
+          phone: phone_number,
+          country: selectedCountry,
+          state: selectedState,
+          city: selectedCity,
           zip_code: zip_code,
           address: address,
           description: description,
+          user_id: 2,
+          company_id: 1
         }),
       });
       if (!response.ok) {

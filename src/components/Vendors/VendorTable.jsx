@@ -32,16 +32,16 @@ const VendorTable = ({
       </thead>
       <tbody className="text-center" id="vendor-tbody">
         {currentEntries.map((vendor, index) => (
-          <tr role="row" className="odd" key={vendor.id}>
+          <tr role="row" className="odd" key={vendor.vendor_id}>
             <td className=" dt-body-center">
               <div className="dt-checkbox">
                 <input
                   type="checkbox"
                   name="id[]"
                   defaultValue=""
-                  value={vendor.id}
-                  checked={selectedVendors.includes(vendor.id)}
-                  onChange={() => handleCheckboxChange(vendor.id)}
+                  value={vendor.vendor_id}
+                  checked={selectedVendors.includes(vendor.vendor_id)}
+                  onChange={() => handleCheckboxChange(vendor.vendor_id)}
                 />
                 <span className="dt-checkbox-label" />
               </div>
@@ -53,30 +53,31 @@ const VendorTable = ({
             <td className="text-center">N/A</td>
             <td className="text-center">{vendor.email}</td>
             <td className="text-center">N/A</td>
-            <td className="text-center">{vendor.phone_number}</td>
+            <td className="text-center">{vendor.phone}</td>
             <td className="text-center">
               <div className="form-check form-switch d-flex justify-content-center">
                 <input
                   className="form-check-input"
                   type="checkbox"
                   checked={vendor.is_active}
-                  id={`flexSwitchCheckChecked-${vendor.id}`}
-                  onChange={() => handleToggle(vendor.id, !vendor.is_active)}
+                  id={`flexSwitchCheckChecked-${vendor.vendor_id}`}
+                  onChange={() => handleToggle(vendor.vendor_id, !vendor.is_active)}
                 />
               </div>
             </td>
             <td>
               <div style={{ color: "#0d6efd" }} className="text-center">
-                <Link to={`/vendordetails/${vendor.id}`}>
+                <Link to={`/vendordetails/${vendor.vendor_id}`}>
                   <i className="fa fa-eye ey1" />
                 </Link>
-                <Link to={`/editvendor/${vendor.id}`}>
+                <Link to={`/editvendor/${vendor.vendor_id}`}>
                   <i className="fa fa-edit mt-2" />
                 </Link>
                 &nbsp;
-                <button onClick={() => handleDelete(vendor.id)}>
+                <button onClick={() => handleDelete(vendor.vendor_id)}>
                   <i className="fa fa-trash" id="trash-vendor" />
                 </button>
+                {vendor.vendor_id}
               </div>
             </td>
           </tr>

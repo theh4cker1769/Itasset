@@ -32,11 +32,11 @@ const Add_Vendor = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/countries", setCountries);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/states", setStates);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/cities", setCities);
-  }, []);
+  // useEffect(() => {
+  //   fetchData(`${API_BASE_URL}/api/countries`, setCountries);
+  //   fetchData("https://apis.itassetmgt.com:8443/api/v1/states", setStates);
+  //   fetchData("https://apis.itassetmgt.com:8443/api/v1/cities", setCities);
+  // }, []);
 
   const handleSubmit = () => {
     if (
@@ -59,32 +59,22 @@ const Add_Vendor = () => {
     const formData = {
       vendor_name: vendor_name,
       email: email,
-      phone_number: phone_number,
-      country_id: selectedCountry,
-      state_id: selectedState,
-      city_id: selectedCity,
+      phone: phone_number,
+      country: selectedCountry,
+      state: selectedState,
+      city: selectedCity,
       zip_code: zip_code,
       address: address,
       description: description,
+      user_id: 2,
+      company_id: 1
     };
+
+    console.log(selectedCountry)
 
     fetch(API_BASE_URL + "/api/vendor", {
       method: "POST",
-      body: JSON.stringify(
-        {
-          "vendor_name": "Sample hghVendor2",
-          "email": "sample2.vendhygyghor@example.com",
-          "phone": "1236565555",
-          "country": "india",
-          "state": "india",
-          "city": "San Francisco",
-          "zip_code": "94105",
-          "address": "123 Main Street",
-          "description": "A sample vendor for testing",
-          "user_id": 2,
-          "company_id": 1
-        }
-      ),
+      body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
       },
