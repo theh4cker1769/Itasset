@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Vendor_details.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { API_BASE_URL } from './../../apiConfig';
+
 
 const Vendor_details = ({ sidebarOpen, match }) => {
   const params = useParams();
@@ -12,7 +12,7 @@ const Vendor_details = ({ sidebarOpen, match }) => {
   const [cityName, setCityName] = useState("");
 
   useEffect(() => {
-    const url = `${API_BASE_URL}/api/vendors/GetVendorById/${params.id}`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/api/vendors/GetVendorById/${params.id}`;
     fetch(url)
       .then((response) => {
         if (response.ok) {

@@ -1,3 +1,18 @@
 .vendors-section .btn-export {
     margin-right: 10px;
 }
+
+.addlist-table .switch-align {
+    display: flex;
+    justify-content: center;
+}
+
+.location-table .editicon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.location-table .editicon svg {
+    cursor: pointer;
+}

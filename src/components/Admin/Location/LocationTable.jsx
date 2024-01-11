@@ -10,7 +10,7 @@ const LocationTable = ({
   return (
     <div className="col-sm-12">
       <table
-        className="checkbox-datatable table nowrap dataTable no-footer dtr-inline"
+        className="checkbox-datatable table nowrap dataTable no-footer dtr-inline location-table"
         id="DataTables_Table_3"
         role="grid"
         aria-describedby="DataTables_Table_3_info"
@@ -118,7 +118,7 @@ const LocationTable = ({
         </thead>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr role="row" className="odd" key={item.id}>
+            <tr role="row" className="odd" key={item.location_id}>
               <td className=" dt-body-center" tabIndex={0}>
                 <div className="dt-checkbox">
                   <input type="checkbox" name="id[]" defaultValue />
@@ -128,8 +128,8 @@ const LocationTable = ({
               <td className="sorting_1">{index + 1}</td>{" "}
               {/* Add 1 to index to display 1-based numbering */}
               <td>{item.office_name}</td>
-              <td>{item.poc_name}</td>
-              <td>{item.state}</td>
+              <td>{item.contact_person_name}</td>
+              <td>{item.state_province}</td>
               <td>{item.city}</td>
               <td>{item.zip_code}</td>
               <td>
@@ -138,8 +138,8 @@ const LocationTable = ({
                     className="form-check-input"
                     type="checkbox"
                     value={"status"}
-                    onClick={(e) => (e, item.id)}
-                    id={`flexSwitchCheckChecked-${item.id}`}
+                    onClick={(e) => (e, item.location_id)}
+                    id={`flexSwitchCheckChecked-${item.location_id}`}
                     defaultChecked={item.is_active}
                     onChange={(e) => updateStatus(item.id, e.target.checked)}
                   />
@@ -147,7 +147,7 @@ const LocationTable = ({
               </td>
               <td>
                 <div className="editicon">
-                  <Link to={`/location/edit/${item.id}`}>
+                  <Link to={`/location/edit/${item.location_id}`}>
                     <i className="fa-solid fa-pen-to-square" />
                   </Link>
                   &nbsp;
@@ -158,7 +158,7 @@ const LocationTable = ({
                     fill="currentColor"
                     className="bi bi-trash"
                     viewBox="0 0 16 16"
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item.location_id)}
                   >
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                     <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />

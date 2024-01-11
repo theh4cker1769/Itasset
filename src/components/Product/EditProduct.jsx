@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import './Add_Product.css';
-import { API_BASE_URL } from './../../apiConfig';
+
 
 const EditProduct = ({ sidebarOpen }) => {
   const [productTypes, setProductTypes] = useState([]);
@@ -18,7 +18,7 @@ const EditProduct = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductTypes = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/producttype`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -34,7 +34,7 @@ const EditProduct = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductCategories = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/productCategory`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -49,7 +49,7 @@ const EditProduct = ({ sidebarOpen }) => {
 
   const fetchProductsbyid = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/products/${params.id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/products/${params.id}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -71,7 +71,7 @@ const EditProduct = ({ sidebarOpen }) => {
   const updateProduct = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_BASE_URL}/api/products/${params.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/products/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

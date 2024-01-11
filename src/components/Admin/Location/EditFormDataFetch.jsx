@@ -8,31 +8,37 @@ const LocationDataFetch = ({
   setPoc_email,
   setPoc_contact,
   setPoc_name,
-  setSelectedCountryId,
-  setSelectedStateId,
-  setSelectedCityId,
+  setAddressLine1,
+  setAddressLine2,
+  setSelectedCountry,
+  setSelectedState,
+  setSelectedCity,
   setZip_code,
 }) => {
   useEffect(() => {
     const fetchLocationData = async () => {
       try {
         const response = await fetch(
-          `https://apis.itassetmgt.com:8443/api/v1/locations/${params.id}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/locations/${params.id}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
         const locationData = await response.json();
-        setData(locationData);
-        setId(locationData.id);
-        setOffice_name(locationData.office_name);
-        setPoc_email(locationData.poc_email);
-        setPoc_contact(locationData.poc_contact);
-        setPoc_name(locationData.poc_name);
-        setSelectedCountryId(locationData.country_id);
-        setSelectedStateId(locationData.state_id);
-        setSelectedCityId(locationData.city_id);
-        setZip_code(locationData.zip_code);
+        setData(locationData.location);
+        
+        setId(locationData.location.location_id);
+        setOffice_name(locationData.location.office_name);
+        setAddressLine1(locationData.location.address_line_1);
+        setAddressLine2(locationData.location.address_line_2);
+        setPoc_email(locationData.location.contact_person_email);
+        setPoc_contact(locationData.location.contact_person_phone);
+        setPoc_name(locationData.location.contact_person_name);
+        setZip_code(locationData.location.zip_code);
+        setSelectedCountry(locationData.location.country);
+        console.log(locationData.location.country);
+        setSelectedState(locationData.location.state_province);
+        setSelectedCity(locationData.location.city);
       } catch (error) {}
     };
     fetchLocationData();

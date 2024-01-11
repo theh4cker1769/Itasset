@@ -4,6 +4,7 @@ import "./assetadd.css";
 import AssetForm from "./AssetForm"; // Make sure to import AssetForm from the correct path
 import Swal from 'sweetalert2';
 
+
 const AssetAdd = ({ sidebarOpen }) => {
   const [assets, setAssets] = useState([]);
   const [productCategories, setProductCategories] = useState([]);
@@ -20,8 +21,7 @@ const AssetAdd = ({ sidebarOpen }) => {
   const [selectedLocation, setSelectedLocation] = useState();
   const [purchaseDate, setPurchaseDate] = useState();
   const [warrantyExpiryDate, setWarrantyExpiryDate] = useState();
-  const [purchaseTypes, setPurchaseTypes] = useState([]);
-  const [selectedPurchaseType, setSelectedPurchaseType] = useState();
+  const [selectedPurchaseType, setSelectedPurchaseType] = useState('');
   const [description, setDescription] = useState("");
   const [serial_number, setSerialNumber] = useState("");
   const navigate = useNavigate();
@@ -33,20 +33,51 @@ const AssetAdd = ({ sidebarOpen }) => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      stateSetter(data);
+      stateSetter(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/productcategories", setProductCategories);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/products", setProducts);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/producttype", setProductTypes);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/locations", setLocations);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/purchase_types", setPurchaseTypes);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/vendors", setVendors);
-  }, []);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`, setProductCategories);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/product-data`, setProducts);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`, setProductTypes);
+  }, [])
+
+  // For vendors
+  useEffect(() => {
+    const fetchDataVendors = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setVendors(data.vendors);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataVendors()
+  }, [])
+
+  // For Locations
+  useEffect(() => {
+    const fetchDataVendors = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setLocations(data.locations);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataVendors()
+  }, [])
 
   const postData = async (e) => {
     if (!selectedProductCategory || !selectedProductType || !selectedProduct || !selectedVendor || !assetName || !price || !selectedLocation || !purchaseDate || !description) {
@@ -56,25 +87,28 @@ const AssetAdd = ({ sidebarOpen }) => {
       return;
     }
     e.preventDefault();
+
     const formData = {
-      product_category_id: selectedProductCategory,
-      product_type_id: selectedProductType,
-      product_id: selectedProduct,
-      vendor_id: selectedVendor,
+      product_category: selectedProductCategory,
+      product_type: selectedProductType,
+      product_name: selectedProduct,
+      vendor: selectedVendor,
       asset_name: assetName,
       price: price,
-      location_id: selectedLocation,
-      purchase_id: purchaseDate,
-      warranty_expiry_date: warrantyExpiryDate, 
-      purchase_type_id: selectedPurchaseType,
+      address: selectedLocation,
+      purchase_date: purchaseDate,
+      warranty_expiry_date: warrantyExpiryDate,
+      purchase_type: selectedPurchaseType,
       description: description,
-      serial_number: serial_number
+      serial_number: serial_number,
+      user_id: 2,
+      company_id: 2
     };
-    
+
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/asset",  {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assets`, {
         method: "POST",
-        body: JSON.stringify({ asset: formData }),
+        body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json",
         },
@@ -88,7 +122,7 @@ const AssetAdd = ({ sidebarOpen }) => {
       const data = await response.json();
       setAssets([...assets, data]);
       Swal.fire({
-       icon: 'success',
+        icon: 'success',
         title: 'Successfully Added',
         showClass: {
           popup: 'animate__animated animate__fadeInDown'
@@ -112,7 +146,7 @@ const AssetAdd = ({ sidebarOpen }) => {
           </h3>
           <hr />
           <AssetForm
-          mode="add"
+            mode="add"
             productCategories={productCategories}
             selectedProductCategory={selectedProductCategory}
             setSelectedProductCategory={setSelectedProductCategory}
@@ -136,7 +170,6 @@ const AssetAdd = ({ sidebarOpen }) => {
             setPurchaseDate={setPurchaseDate}
             warrantyExpiryDate={warrantyExpiryDate}
             setWarrantyExpiryDate={setWarrantyExpiryDate}
-            purchaseTypes={purchaseTypes}
             selectedPurchaseType={selectedPurchaseType}
             setSelectedPurchaseType={setSelectedPurchaseType}
             description={description}

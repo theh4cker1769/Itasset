@@ -7,6 +7,8 @@ import AddFormDataFetch from "./AddFormDataFetch";
 const AddLocation = ({ sidebarOpen }) => {
   const [location, setLocation] = useState([]);
   const [office_name, setOffice_name] = useState("");
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
   const [poc_email, setPoc_email] = useState("");
   const [poc_contact, setPoc_contact] = useState("");
   const [poc_name, setPoc_name] = useState("");
@@ -21,7 +23,7 @@ const AddLocation = ({ sidebarOpen }) => {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPhone, setIsValidPhone] = useState(true);
 
-  const url = "https://apis.itassetmgt.com:8443/api/v1/locations";
+  const url = `${process.env.REACT_APP_API_BASE_URL}/api/locations`
 
   useEffect(() => {
     const areFieldsFilled =
@@ -62,18 +64,22 @@ const AddLocation = ({ sidebarOpen }) => {
   const handleFormSubmit = () => {
     const formData = {
       office_name: office_name,
-      poc_email: poc_email,
-      poc_contact: poc_contact,
-      poc_name: poc_name,
+      contact_person_email: poc_email,
+      contact_person_phone: poc_contact,
+      address_line_1: addressLine1,
+      address_line_2: addressLine2,
+      contact_person_name: poc_name,
       zip_code: zip_code,
-      country_id: selectedCountry,
-      state_id: selectedState,
-      city_id: selectedCity,
+      country: selectedCountry,
+      state_province: selectedState,
+      city: selectedCity,
+      user_id: 2,
+      company_id: 4,
     };
 
     fetch(url, {
       method: "POST",
-      body: JSON.stringify({ location: formData }),
+      body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
       },
@@ -88,6 +94,8 @@ const AddLocation = ({ sidebarOpen }) => {
       .then(() => {
         setLocation([...location, formData]);
         setOffice_name("");
+        setAddressLine1("");
+        setAddressLine2("");
         setPoc_email("");
         setPoc_contact("");
         setPoc_name("");
@@ -96,7 +104,7 @@ const AddLocation = ({ sidebarOpen }) => {
         setSelectedState("");
         setSelectedCity("");
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   return (
@@ -128,6 +136,10 @@ const AddLocation = ({ sidebarOpen }) => {
                 handlePhoneChange={handlePhoneChange}
                 office_name={office_name}
                 setOffice_name={setOffice_name}
+                addressLine1={addressLine1}
+                setAddressLine1={setAddressLine1}
+                addressLine2={addressLine2}
+                setAddressLine2={setAddressLine2}
                 poc_email={poc_email}
                 setPoc_email={setPoc_email}
                 poc_contact={poc_contact}

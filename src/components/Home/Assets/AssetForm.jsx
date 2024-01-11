@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const AssetForm = ({
@@ -25,7 +25,6 @@ const AssetForm = ({
   setPurchaseDate,
   warrantyExpiryDate,
   setWarrantyExpiryDate,
-  purchaseTypes,
   selectedPurchaseType,
   setSelectedPurchaseType,
   description,
@@ -36,6 +35,14 @@ const AssetForm = ({
   postData,
   updateData,
 }) => {
+
+  const purchaseTypes = [
+    { id: 1, purchase_type: "Owned" },
+    { id: 2, purchase_type: "Rented" },
+    { id: 3, purchase_type: "Leased"},
+    { id: 4, purchase_type: "Subscription"}
+  ]
+
   return (
     <form>
       <div className="row">
@@ -53,12 +60,13 @@ const AssetForm = ({
           >
             <option value="">--Choose a Product Category--</option>
             {productCategories.map((productCategory) => (
-              <option key={productCategory.id} value={productCategory.id}>
-                {productCategory.category_name}
+              <option key={productCategory.id} value={productCategory.ProductCategory}>
+                {productCategory.ProductCategory}
               </option>
             ))}
           </select>
         </div>
+
         <div className="col-md-3">
           <label htmlFor="productType">
             Product type <span style={{ color: "red" }}> *</span>
@@ -72,8 +80,8 @@ const AssetForm = ({
           >
             <option value="">--Choose a Product--</option>
             {productTypes.map((productType) => (
-              <option key={productType.id} value={productType.id}>
-                {productType.product_type}
+              <option key={productType.product_type_id} value={productType.product_type_name}>
+                {productType.product_type_name}
               </option>
             ))}
           </select>
@@ -87,16 +95,17 @@ const AssetForm = ({
             name="product"
             className="form-control"
             value={selectedProduct}
-            onChange={(e) => setSelectedProduct(parseInt(e.target.value, 10))}
+            onChange={(e) => setSelectedProduct(e.target.value, 10)}
           >
             <option value="">--Choose a Product--</option>
             {products.map((product) => (
-              <option key={product.id} value={product.id}>
+              <option key={product.id} value={product.product_name}>
                 {product.product_name}
               </option>
             ))}
           </select>
         </div>
+        
         <div className="col-md-3">
           <label htmlFor="vendor">
             Vendor<span style={{ color: "red" }}> *</span>
@@ -106,11 +115,11 @@ const AssetForm = ({
             name="vendor"
             className="form-control"
             value={selectedVendor}
-            onChange={(e) => setSelectedVendor(parseInt(e.target.value, 10))}
+            onChange={(e) => setSelectedVendor(e.target.value)}
           >
             <option value="">--Choose a Vendor--</option>
             {vendors.map((vendor) => (
-              <option key={vendor.id} value={vendor.id}>
+              <option key={vendor.id} value={vendor.vendor_name}>
                 {vendor.vendor_name}
               </option>
             ))}
@@ -150,11 +159,11 @@ const AssetForm = ({
           <select
             class="form-control"
             value={selectedLocation}
-            onChange={(e) => setSelectedLocation(parseInt(e.target.value, 10))}
+            onChange={(e) => setSelectedLocation(e.target.value, 10)}
           >
             <option>--select option--</option>
             {locations.map((loc) => (
-              <option key={loc.id} value={loc.id}>
+              <option key={loc.location_id} value={loc.office_name}>
                 {loc.office_name}
               </option>
             ))}
@@ -198,7 +207,7 @@ const AssetForm = ({
           >
             <option value="">--Select Purchase type--</option>
             {purchaseTypes.map((purchaseType) => (
-              <option key={purchaseType.id} value={purchaseType.id}>
+              <option key={purchaseType.id} value={purchaseType.purchase_type}>
                 {purchaseType.purchase_type}
               </option>
             ))}

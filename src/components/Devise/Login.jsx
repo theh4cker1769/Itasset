@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/api/login", { email, password } )
+      .post(`${process.env.REACT_APP_API_BASE_URL}/api/login`, { email, password } )
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("authToken", response.data.auth_token);

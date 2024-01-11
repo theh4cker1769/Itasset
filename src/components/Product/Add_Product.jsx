@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Add_Product.css";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { API_BASE_URL } from './../../apiConfig';
+
 
 const Add_Product = ({ sidebarOpen }) => {
   const [productTypes, setProductTypes] = useState([]);
@@ -16,7 +16,7 @@ const Add_Product = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductTypes = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/producttype`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -32,7 +32,7 @@ const Add_Product = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchProductCategories = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/productCategory`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -60,7 +60,7 @@ const Add_Product = ({ sidebarOpen }) => {
 
   const postData = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/api/products",
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + "/api/products",
         {
           method: "POST",
           headers: {

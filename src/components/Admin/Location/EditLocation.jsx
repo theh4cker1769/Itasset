@@ -8,6 +8,8 @@ const EditLocation = ({ sidebarOpen }) => {
   const params = useParams();
   const [data, setData] = useState("");
   const [office_name, setOffice_name] = useState("");
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
   const [id, setId] = useState("");
   const [poc_email, setPoc_email] = useState("");
   const [poc_contact, setPoc_contact] = useState("");
@@ -61,25 +63,25 @@ const EditLocation = ({ sidebarOpen }) => {
 
     const formData = {
       office_name: office_name,
-      poc_email: poc_email,
-      poc_contact: poc_contact,
-      poc_name: poc_name,
+      address_line_1: addressLine1,
+      address_line_2: addressLine2,
+      contact_person_email: poc_email,
+      contact_person_phone: poc_contact,
+      contact_person_name: poc_name,
       zip_code: zip_code,
-      country_id: selectedCountry,
-      state_id: selectedState,
-      city_id: selectedCity,
+      country: selectedCountry,
+      state_province: selectedState,
+      city: selectedCity,
     };
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/locations/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/locations/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            location: formData,
-          }),
+          body: JSON.stringify(formData),
         }
       );
 
@@ -109,6 +111,8 @@ const EditLocation = ({ sidebarOpen }) => {
                 setPoc_email={setPoc_email}
                 setPoc_contact={setPoc_contact}
                 setPoc_name={setPoc_name}
+                setAddressLine1={setAddressLine1}
+                setAddressLine2={setAddressLine2}
                 setSelectedCountry={setSelectedCountry}
                 setSelectedState={setSelectedState}
                 setSelectedCity={setSelectedCity}
@@ -118,6 +122,10 @@ const EditLocation = ({ sidebarOpen }) => {
               <LocationForm
                 office_name={office_name}
                 setOffice_name={setOffice_name}
+                addressLine1={addressLine1}
+                setAddressLine1={setAddressLine1}
+                addressLine2={addressLine2}
+                setAddressLine2={setAddressLine2}
                 selectedCountry={selectedCountry}
                 setSelectedCountry={setSelectedCountry}
                 selectedState={selectedState}

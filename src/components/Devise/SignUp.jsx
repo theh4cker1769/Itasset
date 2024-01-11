@@ -62,7 +62,7 @@ const SignUp = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/register", registrationData)
+      .post(`${process.env.REACT_APP_API_BASE_URL}/api/register`, registrationData)
 
       .then((response) => {
         toast('Sign-up successful !!!', {

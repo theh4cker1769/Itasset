@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { API_BASE_URL } from './../apiConfig';
+
 // import { List } from "react-virtualized";
 
 
@@ -14,7 +14,7 @@ const CitySelect = ({ selectedCountryId, selectedStateId, onSelectCity, selected
           return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/api/state/${selectedStateId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/state/${selectedStateId}`);
         const data = await response.json();
         setCities(data.data);
       } catch (error) {

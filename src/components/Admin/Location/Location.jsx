@@ -25,9 +25,9 @@ const Location = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/locations");
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
         const data = await response.json();
-        setData(data);
+        setData(data.locations);
       } catch (error) {}
     };
 
@@ -36,7 +36,7 @@ const Location = ({ sidebarOpen }) => {
   const handleDelete = async (itemId) => {
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/locations/${itemId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/locations/${itemId}`,
         {
           method: "DELETE",
         }
@@ -50,8 +50,10 @@ const Location = ({ sidebarOpen }) => {
     window.location.reload();
   };
 
+  console.log(data)
+
   useEffect(() => {
-    if (data.state_id) {
+    if (data.state_province) {
       const stateUrl = `https://apis.itassetmgt.com:8443/api/v1/states/${data.state_id}`;
       fetch(stateUrl)
         .then((response) => {
@@ -87,15 +89,15 @@ const Location = ({ sidebarOpen }) => {
     ? data.filter(
         (data) =>
           data.office_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          data.poc_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          data.contact_person_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           data.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          data.state.toLowerCase().includes(searchTerm.toLowerCase())
+          data.state_province.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
   const updateStatus = async (id, newStatus) => {
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/locations/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/locations/${id}`,
         {
           method: "PUT",
           headers: {

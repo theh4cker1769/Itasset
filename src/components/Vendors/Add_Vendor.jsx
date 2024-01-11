@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Vender_Form from "./Vendor_Form";
 import "../Vendors/Add_Vendor.css";
 import Swal from 'sweetalert2';
-import { API_BASE_URL } from './../../apiConfig';
+
 
 const Add_Vendor = () => {
   const [vendors, setVendors] = useState([]);
@@ -33,7 +33,7 @@ const Add_Vendor = () => {
   };
 
   // useEffect(() => {
-  //   fetchData(`${API_BASE_URL}/api/countries`, setCountries);
+  //   fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/countries`, setCountries);
   //   fetchData("https://apis.itassetmgt.com:8443/api/v1/states", setStates);
   //   fetchData("https://apis.itassetmgt.com:8443/api/v1/cities", setCities);
   // }, []);
@@ -70,9 +70,7 @@ const Add_Vendor = () => {
       company_id: 1
     };
 
-    console.log(selectedCountry)
-
-    fetch(API_BASE_URL + "/api/vendor", {
+    fetch(process.env.REACT_APP_API_BASE_URL + "/api/vendor", {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {

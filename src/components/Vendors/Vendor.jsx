@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import VendorTable from "./VendorTable";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { API_BASE_URL } from './../../apiConfig';
+
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
@@ -20,7 +20,7 @@ const Vendor = ({ sidebarOpen }) => {
 
   const fetchVendorData = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/api/vendors");
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + "/api/vendors");
       const data = await response.json();
       setVendors(data.vendors);
     } catch (error) {
@@ -54,7 +54,7 @@ const Vendor = ({ sidebarOpen }) => {
     try {
       await Promise.all(
         selectedVendors.map((id) =>
-          fetch(`${API_BASE_URL}/api/vendors/${id}`, {
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/${id}`, {
             method: "DELETE",
           })
         )
@@ -84,7 +84,7 @@ const Vendor = ({ sidebarOpen }) => {
   }
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_BASE_URL}/api/vendors/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/${id}`, {
         method: "DELETE",
       });
       setVendors((prevVendors) =>
@@ -97,7 +97,7 @@ const Vendor = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      await fetch(`${API_BASE_URL}/api/vendors/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

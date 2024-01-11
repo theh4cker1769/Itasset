@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
+
 const AddList = ({ sidebarOpen }) => {
   const [assets, setAssets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -68,9 +69,9 @@ const AddList = ({ sidebarOpen }) => {
 
   const assetData = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/asset");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assets/2`);
       const data = await response.json();
-      setAssets(data);
+      setAssets(data.data);
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
@@ -79,13 +80,15 @@ const AddList = ({ sidebarOpen }) => {
     assetData();
   }, []);
 
+  console.log(assets);
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
   const filterAssets = Array.isArray(assets) ? assets.filter((asset) =>
-    asset.vendor_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    asset.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
     asset.asset_name.toLowerCase() === searchTerm.toLowerCase() ||
-    asset.product_name.toLowerCase() === searchTerm.toLowerCase() || asset.product_type_name.toLowerCase() === searchTerm.toLowerCase()
+    asset.product_name.toLowerCase() === searchTerm.toLowerCase() || asset.product_type.toLowerCase() === searchTerm.toLowerCase()
     || asset.serial_number.toLowerCase() === searchTerm.toLowerCase()
   ) : [];
   
@@ -190,7 +193,7 @@ const AddList = ({ sidebarOpen }) => {
             </div>
             <div className="row mt-3">
               <div className="col-md-12">
-                <table className="checkbox-datatable table nowrap dataTable no-footer dtr-inline" id="DataTables_Table_3" role="grid" aria-describedby="DataTables_Table_3_info">
+                <table className="checkbox-datatable table nowrap dataTable no-footer dtr-inline addlist-table" id="DataTables_Table_3" role="grid" aria-describedby="DataTables_Table_3_info">
                   <thead>
                     <tr role="row" className="lightblue">
                       <th className="dt-body-center sorting_disabled" rowspan="1" colspan="1" aria-label="">
@@ -240,11 +243,11 @@ const AddList = ({ sidebarOpen }) => {
                         <td className="sorting_1">{index + 1}</td>
                         <td className="">{asset.asset_name}</td>
                         <td>{asset.serial_number}</td>
-                        <td>{asset.product_type_name}</td>
+                        <td>{asset.product_type}</td>
                         <td>{asset.product_name}</td>
-                        <td>{asset.vendor_name}</td>
+                        <td>{asset.vendor}</td>
                         <td>
-                          <div className="form-check form-switch">
+                          <div className="form-check form-switch switch-align">
                             <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.id}`} onChange={() => handleToggle(asset.id, !asset.is_active)} />
                           </div>
                         </td>

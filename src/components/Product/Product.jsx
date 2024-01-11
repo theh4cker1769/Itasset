@@ -5,7 +5,7 @@ import ProductThead from "./ProductThead";
 import ProductEntityshow from "./ProductEntityshow";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { API_BASE_URL } from './../../apiConfig';
+
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
@@ -20,7 +20,7 @@ const Product = ({ sidebarOpen }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/api/product-data");
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + "/api/product-data");
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -62,7 +62,7 @@ const Product = ({ sidebarOpen }) => {
   const handleDelete = async (id) => {
 
     try {
-      const response = await fetch(API_BASE_URL + '/api/products/' + id,
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + '/api/products/' + id,
         {
           method: "DELETE",
         }
@@ -111,7 +111,7 @@ const Product = ({ sidebarOpen }) => {
     try {
       await Promise.all(
         selectedProducts.map((id) =>
-          fetch(API_BASE_URL + '/api/products/' + id, {
+          fetch(process.env.REACT_APP_API_BASE_URL + '/api/products/' + id, {
             method: "DELETE",
           })
         )
@@ -129,7 +129,7 @@ const Product = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      const response = await fetch(API_BASE_URL + '/api/products/' + id,
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + '/api/products/' + id,
         {
           method: "PUT",
           headers: {

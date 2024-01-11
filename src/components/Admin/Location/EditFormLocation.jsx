@@ -13,6 +13,10 @@ const LocationForm = ({
   setSelectedState,
   selectedCity,
   setSelectedCity,
+  addressLine1,
+  setAddressLine1,
+  addressLine2,
+  setAddressLine2,
   countries,
   states,
   cities,
@@ -41,33 +45,39 @@ const LocationForm = ({
           <div className="col-md-6">
             <label htmlFor="#">Address line 1</label>
             <br />
-            <input type="text" className="form-control" />
+            <input type="text" className="form-control"
+              value={addressLine1}
+              onChange={(e) => setAddressLine1(e.target.value)} />
           </div>
           <div className="col-md-6">
             <label htmlFor="#">Address line 2</label>
             <br />
-            <input type="text" className="form-control" />
+            <input type="text" className="form-control"
+              value={addressLine2}
+              onChange={(e) => setAddressLine2(e.target.value)} />
           </div>
           <div className="col-md-6">
             <label>
               Country<span className="asterisk"> *</span>
             </label>
-            <CountrySelect onSelectCountry={setSelectedCountry} />             
+            <CountrySelect onSelectCountry={setSelectedCountry} selectedCountry={selectedCountry} />
           </div>
           <div className="col-md-6">
             <label htmlFor="#">State</label>
             <StateSelect
-                    selectedCountryId={selectedCountry}
-                    onSelectState={setSelectedState}
-                  />
+              selectedState={selectedState}
+              selectedCountryId={selectedCountry}
+              onSelectState={setSelectedState}
+            />
           </div>
           <div className="col-md-6">
             <label htmlFor="#">City</label>
             <CitySelect
-                    selectedCountryId={selectedCountry}
-                    selectedStateId={selectedState}
-                    onSelectCity={setSelectedCity}
-                  />
+              selectedCity={selectedCity}
+              selectedCountryId={selectedCountry}
+              selectedStateId={selectedState}
+              onSelectCity={setSelectedCity}
+            />
           </div>
           <div className="col-md-6">
             <label htmlFor="#">Zip code</label>

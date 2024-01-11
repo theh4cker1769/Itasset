@@ -19,6 +19,10 @@ const LocationForm = ({
     handlePhoneChange,
     office_name,
     setOffice_name,
+    addressLine1,
+    setAddressLine1,
+    addressLine2,
+    setAddressLine2,
     poc_email,
     setPoc_email,
     poc_contact,
@@ -56,12 +60,16 @@ const LocationForm = ({
                     <div className="col-md-6">
                         <label htmlFor="#">Address line 1</label>
                         <br />
-                        <input type="text" className="form-control" />
+                        <input type="text" className="form-control"
+                        value={addressLine1}
+                        onChange={(e) => setAddressLine1(e.target.value)}/>
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="#">Address line 2</label>
                         <br />
-                        <input type="text" className="form-control" />
+                        <input type="text" className="form-control" 
+                        value={addressLine2}
+                        onChange={(e) => setAddressLine2(e.target.value)}/>
                     </div>
                     <div className="col-md-6">
                         <label>Country<span style={{ color: "red" }}> *</span></label>

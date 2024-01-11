@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import { API_BASE_URL } from './../../apiConfig';
+
 
 const Edit_Form = () => {
   const [vendor, setVendors] = useState([]);
@@ -39,7 +39,7 @@ const Edit_Form = () => {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch(API_BASE_URL + "/api/vendors");
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + "/api/vendors");
       const data = await response.json();
       setVendors(data);
     } catch (error) {
@@ -50,7 +50,7 @@ const Edit_Form = () => {
   useEffect(() => {
     const fetchVendorData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/vendors/GetVendorById/${params.id}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/GetVendorById/${params.id}`);
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
@@ -78,7 +78,7 @@ const Edit_Form = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/vendors/${params.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

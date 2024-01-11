@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { API_BASE_URL } from './../apiConfig';
+
 // import { List } from "react-virtualized";
 
 
@@ -16,7 +16,7 @@ const StateSelect = ({ selectedCountryId, onSelectState, selectedState }) => {
           return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/api/countries/state/${selectedCountryId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/countries/state/${selectedCountryId}`);
         const data = await response.json();
         setStates(data.data);
         setIsLoading(false); // Clear loading state

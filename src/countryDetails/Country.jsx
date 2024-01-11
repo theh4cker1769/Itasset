@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { API_BASE_URL } from './../apiConfig';
+
 
 const CountrySelect = ({ onSelectCountry, selectedCountry }) => {
   const [countries, setCountries] = useState([]);
@@ -8,7 +8,7 @@ const CountrySelect = ({ onSelectCountry, selectedCountry }) => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/countries`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/countries`);
         const data = await response.json();
         setCountries(data.data);
         setLoading(false);
