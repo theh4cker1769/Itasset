@@ -16,7 +16,7 @@ function AssetDropdown({ assetName, selectedAssetId, setSelectedAssetId }) {
 
         {Array.isArray(assetName) ? (
           assetName.map((assetName) => (
-            <option key={assetName.id} value={assetName.id}>
+            <option key={assetName.asset_id} value={assetName.asset_name}>
               {assetName.asset_name}
             </option>
           ))

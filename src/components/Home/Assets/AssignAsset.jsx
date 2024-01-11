@@ -34,9 +34,9 @@ function AssignAsset() {
 
   const vendordata = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/vendors");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors`);
       const data = await response.json();
-      setVendor(data);
+      setVendor(data.vendors);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }
@@ -44,9 +44,9 @@ function AssignAsset() {
 
   const producttypedata = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/producttype");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`);
       const data = await response.json();
-      setProductType(data);
+      setProductType(data.data);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }
@@ -54,9 +54,9 @@ function AssignAsset() {
 
   const Assetdata = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/asset");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assets/2`);
       const data = await response.json()
-      setAssetName(data);
+      setAssetName(data.data);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }
@@ -64,11 +64,9 @@ function AssignAsset() {
 
   const procuctcatogrydata = async () => {
     try {
-      const response = await fetch(
-        "https://apis.itassetmgt.com:8443/api/v1/productcategories"
-      );
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`);
       const data = await response.json();
-      setProdCategory(data);
+      setProdCategory(data.data);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }
@@ -96,11 +94,9 @@ function AssignAsset() {
 
   const productdata = async () => {
     try {
-      const response = await fetch(
-        "https://apis.itassetmgt.com:8443/api/v1/products"
-      );
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/product-data`);
       const data = await response.json();
-      setProduct(data);
+      setProduct(data.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

@@ -1,1 +1,0 @@
-export const process.env.REACT_APP_API_BASE_URL = 'https://itassetapis.cylsys.com';

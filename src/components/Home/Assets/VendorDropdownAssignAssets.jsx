@@ -14,7 +14,7 @@ function VendorDropdown({ vendor, selectedVendorId, setSelectedVendorId }) {
         <option value="">--Choose a Vendor--</option>
         {Array.isArray(vendor) ? (
           vendor.map((vendor) => (
-            <option key={vendor.id} value={vendor.id}>
+            <option key={vendor.id} value={vendor.vendor_name}>
               {vendor.vendor_name}
             </option>
           ))

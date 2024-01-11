@@ -14,7 +14,7 @@ function ProductDropdown({ product, selectedproductId, setSelectedproductId }) {
         <option value="">--Choose a product--</option>
         {Array.isArray(product) ? (
           product.map((product) => (
-            <option key={product.id} value={product.id}>
+            <option key={product.product_id} value={product.id}>
               {product.product_name}
             </option>
           ))

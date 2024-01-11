@@ -15,8 +15,8 @@ function ProductCategoryDropdown({ prodCategory, selectedproductCategoryId, setS
 
         {Array.isArray(prodCategory) ? (
           prodCategory.map((prodCategory) => (
-            <option key={prodCategory.id} value={prodCategory.id}>
-              {prodCategory.category_name}
+            <option key={prodCategory.id} value={prodCategory.ProductCategory}>
+              {prodCategory.ProductCategory}
             </option>
           ))
         ) : (
