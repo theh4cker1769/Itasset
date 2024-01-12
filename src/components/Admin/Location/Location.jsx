@@ -12,7 +12,6 @@ const Location = ({ sidebarOpen }) => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(true);
-  const [stateName, setStateName] = useState("");
   const [cityName, setCityName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(() => {
@@ -30,7 +29,7 @@ const Location = ({ sidebarOpen }) => {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
         const data = await response.json();
         setData(data.locations);
-      } catch (error) {}
+      } catch (error) { }
     };
 
     fetchData();
@@ -48,26 +47,9 @@ const Location = ({ sidebarOpen }) => {
         setData((prevData) => prevData.filter((item) => item.id !== itemId));
       } else {
       }
-    } catch (error) {}
+    } catch (error) { }
     window.location.reload();
   };
-
-  console.log(data)
-
-  useEffect(() => {
-    if (data.state_province) {
-      const stateUrl = `https://apis.itassetmgt.com:8443/api/v1/states/${data.state_id}`;
-      fetch(stateUrl)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Network response was not ok.");
-        })
-        .then((response) => setStateName(response.state_name))
-        .catch(() => setStateName("N/A"));
-    }
-  }, [data.state_id]);
 
   useEffect(() => {
     if (data.city_id) {
@@ -89,12 +71,12 @@ const Location = ({ sidebarOpen }) => {
   };
   const filterLocations = Array.isArray(data)
     ? data.filter(
-        (data) =>
-          data.office_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          data.contact_person_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          data.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          data.state_province.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      (data) =>
+        data.office_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.contact_person_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        data.state_province.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     : [];
   const updateStatus = async (id, newStatus) => {
     try {
@@ -137,13 +119,21 @@ const Location = ({ sidebarOpen }) => {
   }, [currentPage, itemsPerPage]);
 
 
+  const [stateNames, setStateNames] = useState([]);
+  const [cityNames, setCityNames] = useState([]);
+
+  const sendStateData = (stateData, cityData) => {
+    setStateNames(stateData);
+    setCityNames(cityData);
+  }
+
   const downloadExcel = () => {
 
     const filteredData = data.map(item => ({
       "Office Name": item.office_name,
       "Contact Person Name": item.contact_person_name,
-      "State": item.state_province,
-      "City": item.city,
+      "State": stateNames[item.state_province],
+      "City": cityNames[item.city],
       "Zip Code": item.zip_code,
     }));
 
@@ -213,38 +203,38 @@ const Location = ({ sidebarOpen }) => {
               </div>
             </div>
             <div className="locationsearchbar">
-            <LocationSearchBar handleSearch={handleSearch} />
+              <LocationSearchBar handleSearch={handleSearch} />
             </div>
             <div className="locationtable">
-            <LocationTable
-              currentItems={currentItems}
-              updateStatus={updateStatus}
-              handleDelete={handleDelete}
-            />
-            <div className="row mt-3">
-              <div className="col-sm-12 col-md-5">
-                <div
-                  className="dataTables_info"
-                  id="DataTables_Table_3_info"
-                  role="status"
-                  aria-live="polite"
-                >
-                  {`Showing ${indexOfFirstItem + 1} to ${
-                    indexOfLastItem > filterLocations.length
-                      ? filterLocations.length
-                      : indexOfLastItem
-                  } of ${filterLocations.length} entries`}
+              <LocationTable
+                currentItems={currentItems}
+                updateStatus={updateStatus}
+                handleDelete={handleDelete}
+                sendStateData={sendStateData}
+              />
+              <div className="row mt-3">
+                <div className="col-sm-12 col-md-5">
+                  <div
+                    className="dataTables_info"
+                    id="DataTables_Table_3_info"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {`Showing ${indexOfFirstItem + 1} to ${indexOfLastItem > filterLocations.length
+                        ? filterLocations.length
+                        : indexOfLastItem
+                      } of ${filterLocations.length} entries`}
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
-            <div className="locationpaginate"> 
-            <LocationPagination
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-              filterLocations={filterLocations}
-              paginate={paginate}
-            />
+            <div className="locationpaginate">
+              <LocationPagination
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+                filterLocations={filterLocations}
+                paginate={paginate}
+              />
             </div>
           </section>
         </div>

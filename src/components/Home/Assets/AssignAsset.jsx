@@ -84,7 +84,7 @@ function AssignAsset() {
 
   const departmentdata = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/departments");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
       const data = await response.json();
       setDepartment(data);
     } catch (error) {

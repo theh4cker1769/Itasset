@@ -1,12 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const LocationTable = ({
   currentItems,
   updateStatus,
   handleDelete,
+  sendStateData
   // ... other props
 }) => {
+  // For State Name
+  const [stateNames, setStateNames] = useState([]);
+  useEffect(() => {
+    currentItems.forEach(item => {
+      fetchStateName(item.state_province);
+    });
+  }, [currentItems]);
+
+  const fetchStateName = async (id) => {
+    if (!stateNames[id]) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/state/state_id/${id}`);
+        const data = await response.json();
+        setStateNames(prev => ({ ...prev, [id]: data.data.name }));
+      } catch (error) {
+        console.error('Error fetching state name:', error);
+      }
+    }
+  };
+
+  // For City Name
+  const [cityNames, setCityNames] = useState([]);
+
+  useEffect(() => {
+    currentItems.forEach(item => {
+      fetchCityName(item.city);
+    });
+  }, [currentItems]);
+
+  const fetchCityName = async (id) => {
+    if (!cityNames[id]) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/city/cityid/${id}`);
+        const data = await response.json();
+        setCityNames(prev => ({ ...prev, [id]: data.data.name }));
+      } catch (error) {
+        console.error('Error fetching city name:', error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    sendStateData(stateNames, cityNames)
+  }, [stateNames, cityNames])
+
+
   return (
     <div className="col-sm-12">
       <table
@@ -129,8 +176,9 @@ const LocationTable = ({
               {/* Add 1 to index to display 1-based numbering */}
               <td>{item.office_name}</td>
               <td>{item.contact_person_name}</td>
-              <td>{item.state_province}</td>
-              <td>{item.city}</td>
+              {/* <td>{stateName}</td> */}
+              <td>{stateNames[item.state_province] || 'Loading...'}</td>
+              <td>{cityNames[item.city] || 'Loading...'}</td>
               <td>{item.zip_code}</td>
               <td>
                 <div className="form-check form-switch">

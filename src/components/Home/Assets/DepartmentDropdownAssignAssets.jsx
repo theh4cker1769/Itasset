@@ -12,7 +12,7 @@ function DepartmentDropdown({ department, selectedDepartmentId, setSelectedDepar
         <option value="">--Choose a Department--</option>
         {Array.isArray(department) ? (
           department.map((department) => (
-            <option key={department.id} value={department.id}>
+            <option key={department.department_id} value={department.department_name}>
               {department.department_name}
             </option>
           ))
