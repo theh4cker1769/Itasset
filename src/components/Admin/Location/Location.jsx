@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import LocationSearchBar from "./LocationSearchBar";
 import LocationTable from "./LocationTable";
 import LocationPagination from "./LocationPagination";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const Location = ({ sidebarOpen }) => {
   const params = useParams();
@@ -134,6 +136,37 @@ const Location = ({ sidebarOpen }) => {
     localStorage.setItem("itemsPerPage", itemsPerPage.toString());
   }, [currentPage, itemsPerPage]);
 
+
+  const downloadExcel = () => {
+
+    const filteredData = data.map(item => ({
+      "Office Name": item.office_name,
+      "Contact Person Name": item.contact_person_name,
+      "State": item.state_province,
+      "City": item.city,
+      "Zip Code": item.zip_code,
+    }));
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Convert the filtered JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Generate a buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Convert the buffer to a Blob
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+    // Use FileSaver to save the file
+    saveAs(blob, 'Data.xlsx');
+  }
+
+
   return (
     <>
       <main id="main" className={`main-content ${sidebarOpen ? "shift-right" : ""}`}>
@@ -156,10 +189,8 @@ const Location = ({ sidebarOpen }) => {
                   </a>
                 </button>
                 &nbsp;&nbsp;
-                <button className="btn-vendor">
-                  <Link href="#" className="btn btn-dark venderbtn">
-                    Export
-                  </Link>
+                <button className="btn btn-dark btn-vendor" onClick={downloadExcel}>
+                  Export
                 </button>
               </div>
             </div>

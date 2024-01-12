@@ -16,3 +16,22 @@
 .location-table .editicon svg {
     cursor: pointer;
 }
+
+.department-main {
+    padding: 15px;
+}
+
+.main-padding-department {
+    padding: 15px;
+}
+
+.department-action {
+    color: #0d6efd;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.department-action i {
+    cursor: pointer;
+}

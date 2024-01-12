@@ -13,10 +13,10 @@ const EditDepartment = ({ sidebarOpen }) => {
   const fetchDepartmentData = async () => {
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/departments/${departmentId}`
+        `${process.env.REACT_APP_API_BASE_URL}/api/departments/${departmentId}`
       );
       const data = await response.json();
-      setFormData(data);
+      setFormData(data.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -32,7 +32,7 @@ const EditDepartment = ({ sidebarOpen }) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/departments/${departmentId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/departments/${departmentId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ const EditDepartment = ({ sidebarOpen }) => {
           <div className="container-fluid">
             <div className="card" id="location-main">
               <div>
-                <main>
+                <main className="department-main">
                   <section>
                     <div>
                       <div className="popup">

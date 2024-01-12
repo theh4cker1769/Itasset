@@ -5,7 +5,6 @@ import ProductThead from "./ProductThead";
 import ProductEntityshow from "./ProductEntityshow";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
@@ -33,7 +32,7 @@ const Product = ({ sidebarOpen }) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [products]);
+  }, []);
 
   const handleCheckboxChange = (productId) => {
     setSelectedProducts((prevSelected) =>
@@ -73,6 +72,7 @@ const Product = ({ sidebarOpen }) => {
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== id)
         );
+        fetchProducts()
       } else {
         console.error("Delete request failed");
       }
@@ -192,7 +192,7 @@ const Product = ({ sidebarOpen }) => {
     const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
 
     // Use FileSaver to save the file
-    saveAs(blob, 'productData.xlsx');
+    saveAs(blob, 'Data.xlsx');
   }
 
   return (

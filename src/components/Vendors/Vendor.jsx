@@ -164,7 +164,7 @@ const Vendor = ({ sidebarOpen }) => {
     const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
 
     // Use FileSaver to save the file
-    saveAs(blob, 'productData.xlsx');
+    saveAs(blob, 'Data.xlsx');
   }
 
   return (

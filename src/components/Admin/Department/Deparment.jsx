@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import DepartmentList from "./DepartmentList";
 import Pagination from "./Pagination";
-import {confirmAlert} from 'react-confirm-alert';
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const Department = ({ sidebarOpen }) => {
   const [data, setData] = useState([]);
@@ -10,18 +12,19 @@ const Department = ({ sidebarOpen }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/departments");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
       const data = await response.json();
       setData(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  const confirm =(itemId)=>{
+  const confirm = (itemId) => {
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Are you sure to do this.',
@@ -40,11 +43,12 @@ const Department = ({ sidebarOpen }) => {
   const handleDelete = async (itemId) => {
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/departments/${itemId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/departments/${itemId}`,
         { method: "DELETE" }
       );
       if (response.ok) {
         setData((prevData) => prevData.filter((item) => item.id !== itemId));
+        fetchData();
       }
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -54,7 +58,7 @@ const Department = ({ sidebarOpen }) => {
   const handleStatusToggle = async (itemId, newStatus) => {
     try {
       const response = await fetch(
-        `https://apis.itassetmgt.com:8443/api/v1/departments/${itemId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/departments/${itemId}`,
         {
           method: "PATCH",
           headers: {
@@ -68,9 +72,9 @@ const Department = ({ sidebarOpen }) => {
           prevData.map((item) =>
             item.id === itemId
               ? {
-                  ...item,
-                  status: newStatus
-                }
+                ...item,
+                status: newStatus
+              }
               : item
           )
         );
@@ -79,15 +83,41 @@ const Department = ({ sidebarOpen }) => {
       console.error("Error updating data:", error);
     }
   };
+
+  const downloadExcel = () => {
+
+    const filteredData = data.map(item => ({
+      "Department Name": item.department_name,
+      "Contact Person Name": item.contact_person_name,
+      "Contact Person Email": item.contact_person_email,
+      "Contact Person Phone": item.contact_person_phone,
+    }));
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Convert the filtered JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Generate a buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Convert the buffer to a Blob
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+    // Use FileSaver to save the file
+    saveAs(blob, 'Data.xlsx');
+  }
+
   return (
     <>
-      <main
-        id="main"
-        className={`main-content ${sidebarOpen ? "shift-right" : ""}`}
-      >
+      <main id="main" className={`main-content ${sidebarOpen ? "shift-right" : ""}`}>
         <div className="container-fluid">
           <div className="card" id="location-main">
-            <main>
+            <main className="department-main">
               <section>
                 <div className="row">
                   <div className="col-md-6 col-sm-12">
@@ -101,16 +131,8 @@ const Department = ({ sidebarOpen }) => {
                   <a href="/adddeparment" className="btn btn-primary divclr">
                     <span className="btnn">Add Department</span>
                   </a>
-                  <button
-                    a
-                    href="#"
-                    className="btn btn-dark"
-                    style={{
-                      backgroundColor: "#A66DD4",
-                      border: "none"
-                    }}
-                  >
-                    <span className="btnn">Export Department</span>
+                  <button className="btn btn-dark btn-vendor" onClick={downloadExcel}>
+                    Export
                   </button>
                 </div>
                 <div

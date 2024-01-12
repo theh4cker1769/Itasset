@@ -122,7 +122,7 @@ const DepartmentList = ({
               <tbody>
                 {filterData().length > 0 ? (
                   filterData().map((item, index) => (
-                    <tr key={item.id} role="row" className="odd">
+                    <tr key={item.department_id} role="row" className="odd">
                       <td className=" dt-body-center" tabIndex={0}>
                         <div className="dt-checkbox">
                           <input type="checkbox" name="id[]" defaultValue />
@@ -139,26 +139,23 @@ const DepartmentList = ({
                           <input
                             className="form-check-input"
                             type="checkbox"
-                            id={`flexSwitchCheckChecked-${item.id}`}
-                            defaultChecked={item.status}
+                            id={`flexSwitchCheckChecked-${item.department_id}`}
+                            defaultChecked={item.is_active}
                             onChange={(e) =>
-                              handleStatusToggle(item.id, e.target.checked)
+                              handleStatusToggle(item.department_id, e.target.checked)
                             }
                           />
                         </div>
                       </td>
                       <td>
-                        <div
-                          className="d-flex justify-content-between"
-                          style={{ color: "#0d6efd" }}
-                        >
-                          <Link to={`/edit/${item.id}`}>
+                        <div className="department-action">
+                          <Link to={`/edit/${item.department_id}`}>
                             {" "}
                             <i className="fa-solid fa-pen-to-square" />{" "}
                           </Link>
                           <i
                             className="fa-solid fa-trash"
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => handleDelete(item.department_id)}
                           />
                         </div>
                       </td>

@@ -46,20 +46,20 @@ const Addeparment = ({ sidebarOpen }) => {
         return;
       }
 
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/departments", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          department: {
             department_name: departmentName,
             contact_person_name: contactPersonName,
             contact_person_email: contactPersonEmail,
             contact_person_phone: contactPersonPhone,
+            user_id: 2,
             company_id: 1,
-          },
-        }),
+          }
+        ),
       });
   
       if (response.ok) {
@@ -89,7 +89,7 @@ const Addeparment = ({ sidebarOpen }) => {
         <div className="container-fluid">
           <div className="card" id="adddepartment">
             <div>
-              <main>
+              <main className="main-padding-department">
                 <section>
                   <div>
                     <div className="popup">
