@@ -16,7 +16,7 @@ const Login = () => {
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem("authToken", response.data.auth_token);
-          window.location.href = "/Company";
+          window.location.href = "/home";
         }
       })
       .catch((error) => {
