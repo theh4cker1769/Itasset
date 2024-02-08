@@ -30,8 +30,9 @@ const SignUp = () => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
+
   const handleSignUp = () => {
-    
+
 
     if (!username || !email || !password || !confirm_password || !phone || !agreedToTerms) {
       alert("Please fill in all required fields.");
@@ -61,11 +62,28 @@ const SignUp = () => {
       agreedToTerms,
     };
 
-    axios
-      .post(`${process.env.REACT_APP_API_BASE_URL}/api/register`, registrationData)
+    const domain = email.split('@')[1];
+    console.log(domain, "domain");
 
-      .then((response) => {
-        toast('Sign-up successful !!!', {
+    registerUser(registrationData);
+    domainCheck(domain);
+  };
+
+  const registerUser = async (registrationData) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/register`, registrationData);
+      console.log("Sign-up successful:", response);
+    } catch (error) {
+      alert("Error while signing up", error);
+      console.error("Sign-up failed:", error);
+    }
+  };
+
+  const domainCheck = async (domain) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/domaincheck`, { domain });
+      if (response.data.domainExists === true) {
+        toast.success('Sign-up successful !!!', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -74,21 +92,36 @@ const SignUp = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-          onClose: toastClosed()
+          onClose: toastClosed("signup")
         });
-        
-        console.log("Sign-up successful:", response);
-        
-      })
-      .catch((error) => {
-        alert("Error while signing up", error);
-        console.error("Sign-up failed:", error);
-      });
+      }
+      if (response.data.domainExists === false) {
+        toast.info('Enter Company Details', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          onClose: toastClosed("domain")
+        });
+      }
+      console.log("Domain check successful:", response.data);
+    } catch (error) {
+      console.error("Domain check failed:", error);
+    }
   };
 
-  const toastClosed = () => {
-    setTimeout(()=> {
-      navigate("/Login")
+  const toastClosed = (value) => {
+    setTimeout(() => {
+      if (value === "signup") {
+        navigate("/Login")
+      }
+      if (value === "domain") {
+        navigate("/Company")
+      }
     }, 2000)
   }
 

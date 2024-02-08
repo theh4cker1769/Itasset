@@ -20,9 +20,9 @@ const EditEmployee = ({ sidebarOpen }) => {
 
     const fetchLocation = async () => {
         try {
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/locations");
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
             const data = await response.json();
-            setLocations(data);
+            setLocations(data.locations);
             console.log(data, "locations");
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -31,7 +31,7 @@ const EditEmployee = ({ sidebarOpen }) => {
 
     const fetchDeparment = async () => {
         try {
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/departments");
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
@@ -44,12 +44,12 @@ const EditEmployee = ({ sidebarOpen }) => {
 
     const fetchEmployee = async () => {
         try {
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/employee");
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/user_id/2`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
-            setEmployeeName(jsonData);
+            setEmployeeName(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -57,19 +57,21 @@ const EditEmployee = ({ sidebarOpen }) => {
 
     const fetchEmployeeData2 = async () => {
         try {
-            const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/employee/${params.id}`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/${params.id}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
             const employeeData = await response.json();
-            setData(employeeData)
-            setName(employeeData.name);
-            setEmail(employeeData.email);
-            setEmployee_id(employeeData.employee_id)
-            setPhone(employeeData.phone)
-            setLocation(employeeData.location_id)
-            setReportManager(employeeData.reporting_manager)
-            setDepartment(employeeData.department_id)
+            if (employeeData) {
+                setData(employeeData.data[0])
+                setName(employeeData.data[0].name);
+                setEmail(employeeData.data[0].email);
+                setEmployee_id(employeeData.data[0].employee_id)
+                setPhone(employeeData.data[0].phone)
+                setLocation(employeeData.data[0].location_id)
+                setReportManager(employeeData.data[0].reporting_manager)
+                setDepartment(employeeData.data[0].department_id)
+            }
         } catch (error) {
             console.error("Error fetching employee data:", error);
         }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CountrySelect from "../../countryDetails/Country";
 import StateSelect from '../../countryDetails/State';
 import CitySelect from "../../countryDetails/City";
+import { useNavigate } from "react-router-dom";
 import "../Company/CompanyInfo.css";
 import Logo from "../Assets/Cylsys.png";
 
@@ -25,7 +26,7 @@ const CompanyInfo = () => {
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
 
-  const url = "https://apis.itassetmgt.com:8443/api/v1/companies";
+  const url = `${process.env.REACT_APP_API_BASE_URL}/api/company`;
 
   const handleCountrySelect = (countryId) => {
     setSelectedCountryId(countryId);
@@ -42,38 +43,99 @@ const CompanyInfo = () => {
     setSelectedCityId(cityId);
   };
 
-  const handleFormSubmit = () => {
+  const navigate = useNavigate();
+
+  const handleFormSubmit = async () => {
     const formData = {
-      name: name,
-      email: email,
+      company_name: name,
+      company_email: email,
       contact_number: contact_number,
       portal_name: portal_name,
       industry: industry,
       number_of_employees: number_of_employees,
       tax_information: tax_information,
-      logo: logo,
-      country_id: selectedCountry,
-      state_id: selectedState,
-      city_id: selectedCity,
-      pin_code: pin_code,
-      address: address,
+      company_logo: logo,
+      country: selectedCountry,
+      state_province: selectedState,
+      city: selectedCity,
+      zip_pin_code: pin_code,
+      user_id: 2,
     };
 
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({ company: formData }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        window.location.href = "/home";
-        return response.json();
-      })
-      .then(() => {
+    const domain = email.split('@')[1];
+
+    await domainStore(domain)
+    await registerComapny(formData)
+
+    // fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify({ company: formData }),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error("Network response was not ok");
+    //     }
+    //     window.location.href = "/home";
+    //     return response.json();
+    //   })
+    //   .then(() => {
+    //     setCompany([...company, formData]);
+    //     setName("");
+    //     setEmail("");
+    //     setContactNumber("");
+    //     setPortal("");
+    //     setIndustry("");
+    //     setNumberOfEmployee("");
+    //     setTax("");
+    //     setLogo("");
+    //     setSelectedCountryId("");
+    //     setSelectedStateId("");
+    //     setSelectedCityId("");
+    //     setPincode("");
+    //     setAddress("");
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching data:", error);
+    //     console.log("Server response:", error.response);
+    //   });
+  };
+
+  const domainStore = async (domain) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/domainInsert`, {
+        method: "POST",
+        body: JSON.stringify({ domain }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const registerComapny = async (formData) => {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({formData}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      if (data) {
         setCompany([...company, formData]);
         setName("");
         setEmail("");
@@ -88,13 +150,15 @@ const CompanyInfo = () => {
         setSelectedCityId("");
         setPincode("");
         setAddress("");
+        navigate('/home')
+      }
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      console.log("Server response:", error.response);
+    }
 
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        console.log("Server response:", error.response);
-      });
-  };
+  }
 
   return (
     <>

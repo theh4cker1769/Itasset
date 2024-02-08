@@ -27,21 +27,19 @@ const Dashboard = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchDataForGraph = async () => {
       try {
-        const vendorsResponse = await axios.get("https://apis.itassetmgt.com:8443/api/v1/total_vendors");
-        const employeesResponse = await axios.get("https://apis.itassetmgt.com:8443/api/v1/total_employees");
-        const assetsResponse = await axios.get("https://apis.itassetmgt.com:8443/api/v1/total_assets");
-        const costAssetsResponse = await axios.get("https://apis.itassetmgt.com:8443/api/v1/totalcost_assets");
+        const totalData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/total/2`);
+        const costAssetsResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/totalprice/2`);      
 
-        setTotalVendors(vendorsResponse.data);
-        setTotalEmployee(employeesResponse.data);
-        setTotalAsset(assetsResponse.data);
-        setTotalCostAsset(costAssetsResponse.data);
+        setTotalVendors(totalData.data.data[0].total_vendors);
+        setTotalEmployee(totalData.data.data[0].total_employees);
+        setTotalAsset(totalData.data.data[0].total_assets);
+        setTotalCostAsset(costAssetsResponse.data.GetTotalPrice);
 
         const formattedGraphData = processDataForGraph(
-          vendorsResponse.data,
-          employeesResponse.data,
-          assetsResponse.data,
-          costAssetsResponse.data
+          totalData.data.data[0].total_vendors,
+          totalData.data.data[0].total_vendors,
+          totalData.data.data[0].total_vendors,
+          costAssetsResponse.data.GetTotalPrice
         );
         setGraphData(formattedGraphData);
       } catch (error) {

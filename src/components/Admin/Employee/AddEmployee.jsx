@@ -29,9 +29,9 @@ const AddEmployee = ({ sidebarOpen }) => {
 
     const fetchLocation = async () => {
         try {
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/locations");
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
             const data = await response.json();
-            setLocations(data);
+            setLocations(data.locations);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -39,7 +39,7 @@ const AddEmployee = ({ sidebarOpen }) => {
 
     const fetchDeparment = async () => {
         try {
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/departments");
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
@@ -52,12 +52,12 @@ const AddEmployee = ({ sidebarOpen }) => {
 
     const fetchEmployee = async () => {
         try {
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/employee");
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/user_id/2`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
-            setEmployeeName(jsonData);
+            setEmployeeName(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -88,20 +88,21 @@ const AddEmployee = ({ sidebarOpen }) => {
                 return;
             }
 
-            const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/employees", {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-
                     name: name,
                     email: email,
                     phone: phone,
-                    employee_id: employee_id,
-                    location_id: location,
+                    employee_id_number: employee_id,
+                    location: location,
                     reporting_manager: reporting_manager,
-                    department_id: department
+                    department_id: department,
+                    user_id: 2,
+                    company_id: 1,
                 }),
             });
             if (response.ok) {
@@ -156,7 +157,7 @@ const AddEmployee = ({ sidebarOpen }) => {
 
                                     <div className="col-md-6">
                                         <label >Locations<span style={{ color: "red" }}> *</span></label>
-                                        <select className="form-control" value={location} onChange={(e) => setLocation(parseInt(e.target.value, 10))} >
+                                        <select className="form-control" value={location} onChange={(e) => setLocation(e.target.value)} >
                                             <option value>--Choose your location--</option>
                                             {locations.map((item) =>
                                                 <option key={item.id} value={item.id}>{item.office_name}</option>

@@ -66,10 +66,10 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/company" element={<Company />} />
           <Route path="/forgetpassword" element={ <ForgetPassword/> } />
           <Route path="/" element={localStorage.getItem("authToken")  ? (<Layout><Home/></Layout>) : (<Navigate replace to={"/login"}/>)} />
           <Route path="/home" element={localStorage.getItem("authToken")  ? (<Layout><Home/></Layout>) : (<Navigate replace to={"/login"}/>)} />
-          <Route path="/company"  element={localStorage.getItem("authToken")  ? <Company /> : (<Navigate replace to={"/login"}/>)} />
           <Route path="/addlocation" element={localStorage.getItem("authToken")  ? (<Layout><AddLocation/></Layout>) : (<Navigate replace to={"/login"}/>)} />
           <Route path="/deparment"  element={localStorage.getItem("authToken")  ? (<Layout><Department/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/adddeparment"  element={localStorage.getItem("authToken")  ? (<Layout><Addeparment/></Layout>) : (<Navigate replace to={"/login"}/>)}  />

@@ -74,9 +74,9 @@ function AssignAsset() {
 
   const employedata = async () => {
     try {
-      const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/employee");
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/user_id/2`);
       const data = await response.json();
-      setEmp(data);
+      setEmp(data.data);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }

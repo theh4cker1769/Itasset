@@ -78,9 +78,9 @@ const EditProduct = ({ sidebarOpen }) => {
         },
         body: JSON.stringify({
           product_category: productCategory,
-          // product_type: productType,
-          // product_name: productName,
-          // manufacturer: manufacturer
+          product_type: productType,
+          product_name: productName,
+          manufacturer: manufacturer
         }),
       });
 
@@ -114,7 +114,7 @@ const EditProduct = ({ sidebarOpen }) => {
                   ))}
                 </select>
 
-                {/* <div>
+                <div>
                   <label>Product Type</label>
                   <select className="form-control" value={productType} onChange={(e) =>
                     (setProductType(e.target.value))}>
@@ -137,7 +137,7 @@ const EditProduct = ({ sidebarOpen }) => {
                   <br />
                   <input type="text" className="form-control" value={manufacturer}
                     onChange={(e) => setManufacturer(e.target.value)} />
-                </div> */}
+                </div>
 
                 <div className='d-flex gap-2 mt-3'>
                   <Link to="/Product" className="btn btn-dark" >Back</Link>

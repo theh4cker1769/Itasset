@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import AssetForm from './AssetForm'; 
+import AssetForm from './AssetForm';
 const EditAsset = ({ sidebarOpen }) => {
   const [productCategories, setProductCategories] = useState([]);
   const [selectedProductCategory, setSelectedProductCategory] = useState();
-const [productTypes, setProductTypes] = useState([]);
+  const [productTypes, setProductTypes] = useState([]);
   const [selectedProductType, setSelectedProductType] = useState();
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState();
@@ -22,6 +22,8 @@ const [productTypes, setProductTypes] = useState([]);
   const [serial_number, setSerialNumber] = useState("");
   const [id, setId] = useState("")
 
+  console.log(productCategories)
+
   const navigate = useNavigate();
   const params = useParams();
 
@@ -32,41 +34,83 @@ const [productTypes, setProductTypes] = useState([]);
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      setDataFunction(data);
+      setDataFunction(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/productcategories", setProductCategories);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/producttype", setProductTypes);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/locations", setLocations);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/products", setProducts);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/purchase_types", setPurchaseTypes);
-    fetchData("https://apis.itassetmgt.com:8443/api/v1/vendors", setVendors);
-    fetchData(`https://apis.itassetmgt.com:8443/api/v1/asset/${params.id}`, setAssetData);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`, setProductCategories);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`, setProductTypes);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/product-data`, setProducts);
+    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/assets/asset_id/${params.id}`, setAssetData);
   }, [params.id]);
 
-  const setAssetData = (assetData) => {
-    setId(assetData.id);
-    setAssetName(assetData.asset_name);
-    setDescription(assetData.description);
-    setPrice(assetData.price);
-    setSelectedLocation(assetData.location_id);
-    setSelectedProduct(assetData.product_id);
-    setSelectedProductCategory(assetData.product_category_id);
-    setSelectedProductType(assetData.product_type_id);
-    setSelectedPurchaseType(assetData.purchase_type_id);
-    setSelectedVendor(assetData.vendor_id);
-    setWarrantyExpiryDate(assetData.warranty_expiry_date);
-    setPurchaseDate(assetData.purchase_id);
-    setSerialNumber(assetData.serial_number);
+  // For vendors
+  useEffect(() => {
+    const fetchDataVendors = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setVendors(data.vendors);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataVendors()
+  }, [])
+
+  // For Locations
+  useEffect(() => {
+    const fetchDataVendors = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setLocations(data.locations);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataVendors()
+  }, [])
+
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
+
+  const setAssetData = (assetData) => {
+    if (assetData) {
+      setId(assetData[0].asset_id);
+      setAssetName(assetData[0].asset_name);
+      setDescription(assetData[0].description);
+      setPrice(assetData[0].price);
+      setSelectedLocation(assetData[0].address);
+      setSelectedProduct(assetData[0].product_name);
+      setSelectedProductCategory(assetData[0].product_category);
+      setSelectedProductType(assetData[0].product_type);
+      setSelectedPurchaseType(assetData[0].purchase_type);
+      setSelectedVendor(assetData[0].vendor);
+      setWarrantyExpiryDate(convertDate(assetData[0].warranty_expiry_date));
+      setPurchaseDate(convertDate(assetData[0].purchase_date));
+      setSerialNumber(assetData[0].serial_number);
+    }
+  };
+
 
   const updateData = async (e) => {
     e.preventDefault();
-    const url = `https://apis.itassetmgt.com:8443/api/v1/asset/${id}`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/api/assets/${id}`;
     const data = {
       product_category_id: selectedProductCategory,
       product_type_id: selectedProductType,
