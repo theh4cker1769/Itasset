@@ -5,8 +5,10 @@ import profile from "../../Assets/admin1.jpg";
 import "./Navbar.css";
 import SideBar from "../Sidebar/SideBar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [adminData, setAdminData] = useState({});
   const [error, setError] = useState(null);
@@ -15,25 +17,27 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-  try {
-    const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/logout", {
-      method: "DELETE",
-      credentials: "include",
-      mode: "cors", // Add this line to explicitly specify CORS mode
-      headers: {
-        "Content-Type": "application/json", // Add this line to set the content type
-      },
-    });
-    if (response.ok) {
-      console.log("Logout successful");
-      localStorage.setItem("authToken", "");
-      window.location.href = "/login";
-    } else {
-      console.error("Logout failed");
-    }
-  } catch (error) {
-    console.error("Logout error:", error);
-  }
+    localStorage.setItem("authToken", "");
+    window.location.href = "/login";
+  // try {
+  //   const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/logout", {
+  //     method: "DELETE",
+  //     credentials: "include",
+  //     mode: "cors", // Add this line to explicitly specify CORS mode
+  //     headers: {
+  //       "Content-Type": "application/json", // Add this line to set the content type
+  //     },
+  //   });
+  //   if (response.ok) {
+  //     console.log("Logout successful");
+  //     localStorage.setItem("authToken", "");
+  //     window.location.href = "/login";
+  //   } else {
+  //     console.error("Logout failed");
+  //   }
+  // } catch (error) {
+  //   console.error("Logout error:", error);
+  // }
 };
 
 
