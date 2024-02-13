@@ -17,7 +17,10 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    localStorage.setItem("authToken", "");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userID");
+    localStorage.removeItem("companyID");
+
     window.location.href = "/login";
   // try {
   //   const response = await fetch("https://apis.itassetmgt.com:8443/api/v1/logout", {

@@ -15,7 +15,11 @@ const Login = () => {
       .post(`${process.env.REACT_APP_API_BASE_URL}/api/login`, { email, password } )
       .then((response) => {
         if (response.status === 200) {
+          alert("Login Successful");
+          console.log(response.data);
           localStorage.setItem("authToken", response.data.auth_token);
+          localStorage.setItem("userID", response.data.user_id);
+          localStorage.setItem("companyID", response.data.company_id);
           window.location.href = "/home";
         }
       })

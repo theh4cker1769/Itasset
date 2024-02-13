@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./AddList.css";
 import { Link } from "react-router-dom";
-import {confirmAlert} from 'react-confirm-alert';
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const AddList = ({ sidebarOpen }) => {
   const [assets, setAssets] = useState([]);
@@ -19,8 +20,8 @@ const AddList = ({ sidebarOpen }) => {
       setSelectedAssets([...selectedAssets, assetId]);
     }
   };
-   
-  const submit =(id)=>{
+
+  const submit = (id) => {
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Are you sure to do this.',
@@ -91,8 +92,8 @@ const AddList = ({ sidebarOpen }) => {
     asset.product_name.toLowerCase() === searchTerm.toLowerCase() || asset.product_type.toLowerCase() === searchTerm.toLowerCase()
     || asset.serial_number.toLowerCase() === searchTerm.toLowerCase()
   ) : [];
-  
-  const confirm =(id)=>{
+
+  const confirm = (id) => {
     confirmAlert({
       title: 'Confirm to submit',
       message: 'Are you sure to do this.',
@@ -132,6 +133,36 @@ const AddList = ({ sidebarOpen }) => {
     pageNumbers.push(i);
   }
 
+  const downloadExcel = () => {
+
+    const filteredData = currentAssets.map(item => ({
+      "Asset Name": item.asset_name,
+      "Serial Number": item.serial_number,
+      "Product Type": item.product_type,
+      "Product": item.product_name,
+      "Vendor": item.vendor
+    }));
+
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Convert the filtered JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Generate a buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Convert the buffer to a Blob
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+    // Use FileSaver to save the file
+    saveAs(blob, 'Data.xlsx');
+  }
+
+
   return (
     <>
       <main id="main" className={`main-content ${sidebarOpen ? "shift-right" : ""}`}>
@@ -149,7 +180,7 @@ const AddList = ({ sidebarOpen }) => {
                 <button className="btn mx-1" id="button" style={{ backgroundColor: "#386996", width: "160px" }}>
                   <Link to="/home/assetadd" className="link">Add Asset</Link>
                 </button>
-                <button className="btn mx-1" id="button" style={{ width: "160px", backgroundColor: "#A66DD4" }}>
+                <button className="btn btn-dark btn-vendor mx-3" onClick={downloadExcel}>
                   Export
                 </button>
                 <button className="btn btn-primary" onClick={submit} id="button" style={{ width: "160px" }}>
@@ -282,7 +313,7 @@ const AddList = ({ sidebarOpen }) => {
             </div>
 
             <div className="row mt-3">
-            <div className="col-sm-12 col-md-5">
+              <div className="col-sm-12 col-md-5">
                 <div className="dataTables_info" id="DataTables_Table_3_info" role="status" aria-live="polite">
                   Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, filterAssets.length)} of {filterAssets.length} entries
                 </div>

@@ -3,7 +3,7 @@ import "./SignUp.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import logo from "../Assets/Cylsys.png";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,9 +26,44 @@ const SignUp = () => {
   const [agreedToTermsError, setAgreedToTermsError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
+  const [domainButton, setDomainButton] = useState();
+  const [comapnyID, setCompanyID] = useState();
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
+  };
+
+  const handleEmailBlur = () => {
+
+    const domain = email.split('@')[1];
+    console.log(domain, "domain");
+
+    domainCheck(domain);
+  };
+
+  const domainCheck = async (domain) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/domain/${domain}`);
+      if (response.data.success === false) {
+        setDomainButton(true);
+        toast.error('Company not exists. Please Add Company First !!!', {
+          position: "top-right",
+          autoClose: 10000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        });
+      }
+      if (response.data.success === true) {
+        setDomainButton(false);
+        setCompanyID(response.data.company_id);
+      }
+    } catch (error) {
+      console.error("Domain check failed:", error);
+    }
   };
 
   const handleSignUp = () => {
@@ -59,31 +94,33 @@ const SignUp = () => {
       password,
       phone,
       country_code,
+      comapnyID,
       agreedToTerms,
     };
-
-    const domain = email.split('@')[1];
-    console.log(domain, "domain");
-
     registerUser(registrationData);
-    domainCheck(domain);
+
   };
+
+
 
   const registerUser = async (registrationData) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/register`, registrationData);
       console.log("Sign-up successful:", response);
-    } catch (error) {
-      alert("Error while signing up", error);
-      console.error("Sign-up failed:", error);
-    }
-  };
-
-  const domainCheck = async (domain) => {
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/domaincheck`, { domain });
-      if (response.data.domainExists === true) {
-        toast.success('Sign-up successful !!!', {
+      if (response.data.success === false) {
+        toast.error('Email Already Exists !!!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        });
+      }
+      if (response.data.success === true) {
+        toast.success('User Registered Successfully !!!', {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -95,33 +132,17 @@ const SignUp = () => {
           onClose: toastClosed("signup")
         });
       }
-      if (response.data.domainExists === false) {
-        toast.info('Enter Company Details', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          onClose: toastClosed("domain")
-        });
-      }
-      console.log("Domain check successful:", response.data);
     } catch (error) {
-      console.error("Domain check failed:", error);
+      alert("Error while signing up", error);
+      console.error("Sign-up failed:", error);
     }
   };
 
-  const toastClosed = (value) => {
+
+
+  const toastClosed = () => {
     setTimeout(() => {
-      if (value === "signup") {
-        navigate("/Login")
-      }
-      if (value === "domain") {
-        navigate("/Company")
-      }
+      navigate("/login")
     }, 2000)
   }
 
@@ -253,11 +274,15 @@ const SignUp = () => {
                       className="form-control"
                       placeholder="Email"
                       value={email}
+                      onBlur={handleEmailBlur}
                       onChange={handleEmailChange}
                     />
                     {emailError && (
                       <div className="error text-danger">{emailError}</div>
                     )}
+                    {domainButton === true &&
+                      <button className="btn btn-primary mt-2 btn-comapny"><NavLink to={'/company'}>Add Company</NavLink></button>
+                    }
                   </div>
                   <div className="mb-3">
                     <label htmlFor="" className="form-label">
@@ -353,8 +378,9 @@ const SignUp = () => {
                   <button
                     className="btn btn-primary col-12"
                     onClick={handleSignUp}
+                    disabled={domainButton ? true : false}
                   >
-                    SIGN UP
+                    {domainButton ? '❌ ' : ''} SIGN UP
                   </button>
                 </div>
               </div>
@@ -363,7 +389,7 @@ const SignUp = () => {
         </div>
       </div>
       <ToastContainer />
-    </section>
+    </section >
   );
 };
 export default SignUp;

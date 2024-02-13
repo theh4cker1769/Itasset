@@ -46,6 +46,7 @@ const CompanyInfo = () => {
   const navigate = useNavigate();
 
   const handleFormSubmit = async () => {
+    const domain = email.split('@')[1];
     const formData = {
       company_name: name,
       company_email: email,
@@ -58,13 +59,13 @@ const CompanyInfo = () => {
       country: selectedCountry,
       state_province: selectedState,
       city: selectedCity,
+      domain: domain,
       zip_pin_code: pin_code,
-      user_id: 2,
     };
 
-    const domain = email.split('@')[1];
+    
 
-    await domainStore(domain)
+    // await domainStore(domain)
     await registerComapny(formData)
 
     // fetch(url, {
@@ -103,30 +104,11 @@ const CompanyInfo = () => {
     //   });
   };
 
-  const domainStore = async (domain) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/domainInsert`, {
-        method: "POST",
-        body: JSON.stringify({ domain }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
-
   const registerComapny = async (formData) => {
     try {
       const response = await fetch(url, {
         method: "POST",
-        body: JSON.stringify({formData}),
+        body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json",
         },
@@ -150,7 +132,7 @@ const CompanyInfo = () => {
         setSelectedCityId("");
         setPincode("");
         setAddress("");
-        navigate('/home')
+        navigate('/signup')
       }
       console.log(data);
     } catch (error) {
@@ -159,6 +141,27 @@ const CompanyInfo = () => {
     }
 
   }
+
+  // const domainStore = async (domain) => {
+  //   try {
+  //     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/domainInsert`, {
+  //       method: "POST",
+  //       body: JSON.stringify({ domain }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // }
+
+  
 
   return (
     <>
