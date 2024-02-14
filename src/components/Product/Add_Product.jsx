@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 
 
 const Add_Product = ({ sidebarOpen }) => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const [productTypes, setProductTypes] = useState([]);
   const [productCategories, setProductCategories] = useState([]);
   const [productCategory, setProductCategory] = useState("");
@@ -71,8 +74,8 @@ const Add_Product = ({ sidebarOpen }) => {
             product_type: productType,
             product_name: productName,
             manufacturer: manufacturer,
-            user_id: 2,
-            company_id: 2,
+            user_id: userID,
+            company_id: companyID,
             is_active: true
           }),
         }

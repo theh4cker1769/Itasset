@@ -5,6 +5,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import axios from "axios";
+import { set } from "react-hook-form";
 
 const AddList = ({ sidebarOpen }) => {
   const [assets, setAssets] = useState([]);
@@ -53,15 +55,15 @@ const AddList = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      await fetch(`https://apis.itassetmgt.com:8443/api/v1/asset/${id}`, {
-        method: 'PATCH',
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assets/status/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ is_active: newStatus }),
+        body: JSON.stringify({ status: newStatus }),
       });
       setAssets((prevAssets) =>
-        prevAssets.map((asset) => (asset.id === id ? { ...asset, is_active: newStatus } : asset))
+        prevAssets.map((asset) => (asset.asset_id === id ? { ...asset, is_active: newStatus } : asset))
       );
     } catch (error) {
       console.error(error);
@@ -70,9 +72,14 @@ const AddList = ({ sidebarOpen }) => {
 
   const assetData = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assets/2`);
-      const data = await response.json();
-      setAssets(data.data);
+      const response = await axios.get(process.env.REACT_APP_API_BASE_URL + "/api/assets/getdata", {
+        params: {
+          user_id: localStorage.getItem("userID"),
+          company_id: localStorage.getItem("companyID")
+        }
+      });
+      setAssets(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
@@ -279,7 +286,7 @@ const AddList = ({ sidebarOpen }) => {
                         <td>{asset.vendor}</td>
                         <td>
                           <div className="form-check form-switch switch-align">
-                            <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.id}`} onChange={() => handleToggle(asset.id, !asset.is_active)} />
+                            <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.asset_id}`} onChange={() => handleToggle(asset.asset_id, !asset.is_active)} />
                           </div>
                         </td>
                         <td>

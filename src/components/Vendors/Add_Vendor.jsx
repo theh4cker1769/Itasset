@@ -20,17 +20,19 @@ const Add_Vendor = () => {
   const [selectedState, setSelectedState] = useState();
   const [selectedCity, setSelectedCity] = useState();
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
   const navigate = useNavigate();
 
-  const fetchData = async (url, setterFunction) => {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      setterFunction(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async (url, setterFunction) => {
+  //   try {
+  //     const response = await fetch(url);
+  //     const data = await response.json();
+  //     setterFunction(data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   // useEffect(() => {
   //   fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/countries`, setCountries);
@@ -66,8 +68,8 @@ const Add_Vendor = () => {
       zip_code: zip_code,
       address: address,
       description: description,
-      user_id: 2,
-      company_id: 1
+      user_id: userID,
+      company_id: companyID
     };
 
     fetch(process.env.REACT_APP_API_BASE_URL + "/api/vendor", {

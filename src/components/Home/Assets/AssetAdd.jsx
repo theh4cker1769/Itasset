@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./assetadd.css";
 import AssetForm from "./AssetForm"; // Make sure to import AssetForm from the correct path
 import Swal from 'sweetalert2';
-
+import axios from "axios";
 
 const AssetAdd = ({ sidebarOpen }) => {
   const [assets, setAssets] = useState([]);
@@ -26,7 +26,12 @@ const AssetAdd = ({ sidebarOpen }) => {
   const [serial_number, setSerialNumber] = useState("");
   const navigate = useNavigate();
 
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const fetchData = async (url, stateSetter) => {
+
+
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -49,7 +54,7 @@ const AssetAdd = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchDataVendors = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors?user_id=${userID}&company_id=${companyID}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -101,8 +106,8 @@ const AssetAdd = ({ sidebarOpen }) => {
       purchase_type: selectedPurchaseType,
       description: description,
       serial_number: serial_number,
-      user_id: 2,
-      company_id: 2
+      user_id: userID,
+      company_id: companyID
     };
 
     try {

@@ -5,6 +5,9 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const Employee = ({ sidebarOpen }) => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,7 +16,7 @@ const Employee = ({ sidebarOpen }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/user_id/2`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getdata_employees?user_id=${userID}&company_id=${companyID}`);
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
@@ -40,7 +43,7 @@ const Employee = ({ sidebarOpen }) => {
   const updateStatus = async (id, newStatus) => {
     try {
       const response = await fetch(
-        `hhttps://apis.itassetmgt.com:8443/api/v1/employee/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/employees/status/${id}`,
         {
           method: "PUT",
           headers: {
@@ -54,7 +57,7 @@ const Employee = ({ sidebarOpen }) => {
       if (response.ok) {
         setData((prevData) =>
           prevData.map((item) =>
-            item.id === id ? { ...item, status: newStatus } : item
+            item.employee_id === id ? { ...item, status: newStatus } : item
           )
         );
       } else {
@@ -160,7 +163,7 @@ const Employee = ({ sidebarOpen }) => {
                       <td>{item.location}</td>
                       <td>
                         <div className="form-check form-switch">
-                          <input className="form-check-input" type="checkbox" value={status} onClick={(e) => (e, item.id)} id={`flexSwitchCheckChecked-${item.id}`} defaultChecked={item.status} onChange={(e) => updateStatus(item.id, e.target.checked)} />
+                          <input className="form-check-input" type="checkbox" value={status} id={`flexSwitchCheckChecked-${item.id}`} defaultChecked={item.is_active} onChange={(e) => updateStatus(item.employee_id, e.target.checked)} />
                         </div>
                       </td>
                       <td>

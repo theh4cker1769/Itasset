@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../Location/AddLocation.css";
-import { Link } from "react-router-dom";
 import AddForm from "./AddForm";
 import AddFormDataFetch from "./AddFormDataFetch";
 
 const AddLocation = ({ sidebarOpen }) => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const [location, setLocation] = useState([]);
   const [office_name, setOffice_name] = useState("");
   const [addressLine1, setAddressLine1] = useState("");
@@ -73,8 +75,8 @@ const AddLocation = ({ sidebarOpen }) => {
       country: selectedCountry,
       state_province: selectedState,
       city: selectedCity,
-      user_id: 2,
-      company_id: 4,
+      user_id: userID,
+      company_id: companyID
     };
 
     fetch(url, {

@@ -12,6 +12,8 @@ const ProfileSection = ({ sidebarOpen }) => {
   const [companyData, setCompanyData] = useState({});
   const [error, setError] = useState(null);
   const [logo, setLogo] = useState("");
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -21,13 +23,14 @@ const ProfileSection = ({ sidebarOpen }) => {
     }
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://apis.itassetmgt.com:8443/api/v1/profiles", {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getprofile/${userID}/${companyID}`, {
           headers: {
             Authorization: authToken,
           },
         });
-        setAdminData(response.data.admin);
-        setCompanyData(response.data.company);
+        // console.log(response.data.data);
+        setAdminData(response.data.data);
+        // setCompanyData(response.data.company);
        } catch (error) {
         setError("Error fetching data.");
       }
@@ -55,11 +58,11 @@ const ProfileSection = ({ sidebarOpen }) => {
                   <ul className="contectIcon">
                     <li>
                       <FontAwesomeIcon icon={faPhone} className="mr-3 icon" />
-                      {adminData.phone_number}
+                      {adminData.phone_number_var}
                     </li>
                     <li>
                       <FontAwesomeIcon icon={faEnvelope} className="icon" />
-                      {adminData.email}
+                      {adminData.email_var}
                     </li>
                     <li>
                       <FontAwesomeIcon icon={faUserPlus} className="icon" />
@@ -85,18 +88,18 @@ const ProfileSection = ({ sidebarOpen }) => {
                 <div className="tab flex" style={{ marginLeft: "40px" }}>
                   <table>
                     <tbody>
-                      <tr key={adminData.id}>
+                      <tr>
                         <tr>
                           <th>Full name</th>
-                          <td>{adminData.name}</td>
+                          <td>{adminData.username_var}</td>
                         </tr>
                         <tr>
                           <th>Email</th>
-                          <td>{adminData.email}</td>
+                          <td>{adminData.email_var}</td>
                         </tr>
                         <tr>
                           <th>Contact No.</th>
-                          <td>{adminData.phone_number}</td>
+                          <td>{adminData.phone_number_var}</td>
                         </tr>
                         <tr>
                           <th>Designation</th>
@@ -125,30 +128,25 @@ const ProfileSection = ({ sidebarOpen }) => {
                 <div className="tab" style={{ marginLeft: "40px" }}>
                   <table>
                     <tbody>
-                      <tr key={companyData.id}>
+                      <tr>
                         <tr>
                           <th>Company Name</th>
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <td>{companyData.name}</td>
-                        </tr>
-                        <tr>
-                          <th>Company Address</th>
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <td>{companyData.address}</td>
+                          &nbsp;
+                          <td>{adminData.company_name_var}</td>
                         </tr>
                       </tr>
-                      <tr key={adminData.id}>
+                      <tr>
                         <tr>
-                          <th>Contact Person Name</th>
-                          <td>{adminData.name}</td>
+                          <th>No of Employees</th>
+                          <td>{adminData.number_of_employees_var}</td>
                         </tr>
                         <tr>
-                          <th>Contact Person Email</th>
-                          <td>{adminData.email}</td>
+                          <th>Company Email</th>
+                          <td>{adminData.company_email_var}</td>
                         </tr>
                         <tr>
-                          <th>Contact Person Mobile</th>
-                          <td>{adminData.phone_number}</td>
+                          <th>Company Phone</th>
+                          <td>{adminData.contact_number_var}</td>
                         </tr>
                       </tr>  
                     </tbody>
@@ -156,7 +154,7 @@ const ProfileSection = ({ sidebarOpen }) => {
                 </div>
               </div>
                 <br />
-              <div className="third">
+              {/* <div className="third">
                 <div className="summarydata">
                   <h6>
                     <FontAwesomeIcon icon={faShareAlt} className="icon" />
@@ -182,7 +180,7 @@ const ProfileSection = ({ sidebarOpen }) => {
                     </tr>
                   </tbody>
                 </table>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

@@ -9,6 +9,9 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const Product = ({ sidebarOpen }) => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,7 +22,7 @@ const Product = ({ sidebarOpen }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_BASE_URL + "/api/product-data");
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + `/api/product?user_id=${userID}&company_id=${companyID}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

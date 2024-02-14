@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 const AddEmployee = ({ sidebarOpen }) => {
+    const userID = localStorage.getItem("userID");
+    const companyID = localStorage.getItem("companyID");
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [employee_id, setEmployee_id] = useState("");
@@ -52,11 +55,12 @@ const AddEmployee = ({ sidebarOpen }) => {
 
     const fetchEmployee = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/user_id/2`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getdata_employees?user_id=${userID}&company_id=${companyID}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
+            console.log(jsonData.data, "data");
             setEmployeeName(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -101,8 +105,8 @@ const AddEmployee = ({ sidebarOpen }) => {
                     location: location,
                     reporting_manager: reporting_manager,
                     department_id: department,
-                    user_id: 2,
-                    company_id: 1,
+                    user_id: userID,
+                    company_id: companyID,
                 }),
             });
             if (response.ok) {

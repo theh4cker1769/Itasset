@@ -22,9 +22,7 @@ const VendorTable = ({
           <th></th>
           <th>S.No</th>
           <th>Vendor Name</th>
-          <th>Contact person</th>
           <th>Email</th>
-          <th>GSTIN No.</th>
           <th>Phone no</th>
           <th>Current Status</th>
           <th>Action</th>
@@ -50,9 +48,7 @@ const VendorTable = ({
               {getContinuousIndex(index)}
             </td>
             <td className="text-center">{vendor.vendor_name}</td>
-            <td className="text-center">N/A</td>
             <td className="text-center">{vendor.email}</td>
-            <td className="text-center">N/A</td>
             <td className="text-center">{vendor.phone}</td>
             <td className="text-center">
               <div className="form-check form-switch d-flex justify-content-center">
@@ -77,7 +73,6 @@ const VendorTable = ({
                 <button onClick={() => handleDelete(vendor.vendor_id)}>
                   <i className="fa fa-trash" id="trash-vendor" />
                 </button>
-                {vendor.vendor_id}
               </div>
             </td>
           </tr>

@@ -189,7 +189,7 @@ const LocationTable = ({
                     onClick={(e) => (e, item.location_id)}
                     id={`flexSwitchCheckChecked-${item.location_id}`}
                     defaultChecked={item.is_active}
-                    onChange={(e) => updateStatus(item.id, e.target.checked)}
+                    onChange={(e) => updateStatus(item.location_id, e.target.checked)}
                   />
                 </div>
               </td>

@@ -7,14 +7,18 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const Department = ({ sidebarOpen }) => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/data_departments?user_id=${userID}&company_id=${companyID}`);
       const data = await response.json();
-      setData(data);
+      // console.log("Department Data:", data.data);
+      setData(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

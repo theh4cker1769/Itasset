@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import VendorTable from "./VendorTable";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import axios from "axios";
 
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
@@ -20,9 +21,13 @@ const Vendor = ({ sidebarOpen }) => {
 
   const fetchVendorData = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_BASE_URL + "/api/vendors");
-      const data = await response.json();
-      setVendors(data.vendors);
+      const response = await axios.get(process.env.REACT_APP_API_BASE_URL + "/api/vendors", {
+        params: {
+          user_id: localStorage.getItem("userID"),
+          company_id: localStorage.getItem("companyID")
+        }
+      });
+      setVendors(response.data.vendors);
     } catch (error) {
       console.error("Error fetching vendors:", error);
     }

@@ -119,7 +119,7 @@ const AssetForm = ({
           >
             <option value="">--Choose a Vendor--</option>
             {vendors.map((vendor) => (
-              <option key={vendor.id} value={vendor.vendor_name}>
+              <option key={vendor.vendor_id} value={vendor.vendor_name}>
                 {vendor.vendor_name}
               </option>
             ))}

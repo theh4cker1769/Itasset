@@ -18,6 +18,8 @@ const Edit_Form = () => {
   const [selectedState, setSelectedState] = useState();
   const [selectedCity, setSelectedCity] = useState();
   const navigate = useNavigate();
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
   const params = useParams();
 
   const fetchData = async (url, setData) => {
@@ -93,8 +95,8 @@ const Edit_Form = () => {
           zip_code: zip_code,
           address: address,
           description: description,
-          user_id: 2,
-          company_id: 1
+          user_id: userID,
+          company_id: companyID
         }),
       });
       if (!response.ok) {

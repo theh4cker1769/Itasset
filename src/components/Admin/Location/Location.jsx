@@ -8,6 +8,9 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 const Location = ({ sidebarOpen }) => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const params = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -26,10 +29,12 @@ const Location = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
         const data = await response.json();
-        setData(data.locations);
-      } catch (error) { }
+        setData(data.data);
+      } catch (error) { 
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
@@ -52,7 +57,7 @@ const Location = ({ sidebarOpen }) => {
   };
 
   useEffect(() => {
-    if (data.city_id) {
+    if (data) {
       const cityUrl = `https://apis.itassetmgt.com:8443/api/v1/cities/${data.city_id}`;
       fetch(cityUrl)
         .then((response) => {
@@ -64,7 +69,7 @@ const Location = ({ sidebarOpen }) => {
         .then((response) => setCityName(response.city_name))
         .catch(() => setCityName("N/A"));
     }
-  }, [data.city_id]);
+  }, [data]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -81,21 +86,21 @@ const Location = ({ sidebarOpen }) => {
   const updateStatus = async (id, newStatus) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/locations/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/location/status/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            is_active: newStatus,
+            status: newStatus,
           }),
         }
       );
       if (response.ok) {
         setData((prevData) =>
           prevData.map((item) =>
-            item.id === id ? { ...item, is_active: newStatus } : item
+            item.location_id === id ? { ...item, is_active: newStatus } : item
           )
         );
         console.log("status updated");
