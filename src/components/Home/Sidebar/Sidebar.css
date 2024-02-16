@@ -117,3 +117,7 @@ button{
     margin: 0px -8px;
   }
 }
+
+#sidebar .list-unstyled li .active{
+  color: rgba(0, 0, 128, 0.767);
+}

@@ -132,14 +132,14 @@ const Product = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_BASE_URL + '/api/products/' + id,
+      const response = await fetch(process.env.REACT_APP_API_BASE_URL + '/api/product/status/' + id,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            is_active: newStatus,
+            status: newStatus,
           }),
         }
       );
@@ -147,7 +147,7 @@ const Product = ({ sidebarOpen }) => {
       if (response.ok) {
         setProducts((prevData) =>
           prevData.map((item) =>
-            item.id === id ? { ...item, status: newStatus } : item
+            item.product_id === id ? { ...item, status: newStatus } : item
           )
         );
       }

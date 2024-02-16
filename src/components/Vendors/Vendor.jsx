@@ -102,12 +102,12 @@ const Vendor = ({ sidebarOpen }) => {
 
   const handleToggle = async (id, newStatus) => {
     try {
-      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/${id}`, {
-        method: "PATCH",
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors/status/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ is_active: newStatus }),
+        body: JSON.stringify({ status: newStatus }),
       });
       setVendors((prevVendors) =>
         prevVendors.map((vendor) =>

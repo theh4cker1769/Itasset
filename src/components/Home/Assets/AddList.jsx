@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AddList.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import * as XLSX from 'xlsx';
@@ -79,7 +79,6 @@ const AddList = ({ sidebarOpen }) => {
         }
       });
       setAssets(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching countries:", error);
     }
@@ -185,7 +184,7 @@ const AddList = ({ sidebarOpen }) => {
             <div className="row">
               <div className="col-md-12">
                 <button className="btn mx-1" id="button" style={{ backgroundColor: "#386996", width: "160px" }}>
-                  <Link to="/home/assetadd" className="link">Add Asset</Link>
+                  <NavLink to="/assetadd" className="link">Add Asset</NavLink>
                 </button>
                 <button className="btn btn-dark btn-vendor mx-3" onClick={downloadExcel}>
                   Export
@@ -290,9 +289,15 @@ const AddList = ({ sidebarOpen }) => {
                           </div>
                         </td>
                         <td>
-                          <Link to="/assignasset" className="btn btn-primary">
-                            Assign
-                          </Link>
+                          {asset.name ?
+                            <>
+                              {asset.name}
+                            </>
+                            :
+                            <Link to={`/assignasset/${asset.asset_id}`} className="btn btn-primary">
+                              Assign
+                            </Link>
+                          }
                         </td>
                         <td>
                           <div style={{ color: "#0d6efd" }}>

@@ -62,9 +62,9 @@ const Department = ({ sidebarOpen }) => {
   const handleStatusToggle = async (itemId, newStatus) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/departments/${itemId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/departments/status/${itemId}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json"
           },
@@ -74,7 +74,7 @@ const Department = ({ sidebarOpen }) => {
       if (response.ok) {
         setData((prevData) =>
           prevData.map((item) =>
-            item.id === itemId
+            item.department_id === itemId
               ? {
                 ...item,
                 status: newStatus

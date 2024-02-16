@@ -76,10 +76,10 @@ function App() {
           <Route path="/notification"  element={localStorage.getItem("authToken")  ? (<Layout><Notification/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/employee"  element={localStorage.getItem("authToken")  ? (<Layout><Employee/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/addemployee"  element={localStorage.getItem("authToken")  ? (<Layout><AddEmployee/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
-          <Route path="/home/addlist" element={localStorage.getItem("authToken")  ? (<Layout><AddList/></Layout>) : (<Navigate replace to={"/login"}/>)} />
+          <Route path="/addlist" element={localStorage.getItem("authToken")  ? (<Layout><AddList/></Layout>) : (<Navigate replace to={"/login"}/>)} />
           <Route path="/product"  element={localStorage.getItem("authToken")  ? (<Layout><Product/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/addproduct"  element={localStorage.getItem("authToken")  ? (<Layout><Add_Product/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
-          <Route path="/home/assetadd" element={localStorage.getItem("authToken")  ? (<Layout><AssetAdd/></Layout>) : (<Navigate replace to={"/login"}/>)} /> 
+          <Route path="/assetadd" element={localStorage.getItem("authToken")  ? (<Layout><AssetAdd/></Layout>) : (<Navigate replace to={"/login"}/>)} /> 
           <Route path="/profile"  element={localStorage.getItem("authToken")  ? (<Layout><ProfileSection/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/location"  element={localStorage.getItem("authToken")  ? (<Layout><Location/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/vendor"  element={localStorage.getItem("authToken")  ? (<Layout><Vendor/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
@@ -88,10 +88,10 @@ function App() {
           <Route path="/edit/:departmentId"  element={localStorage.getItem("authToken")  ? (<Layout><EditDepartment/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/vendordetails/:id" element={localStorage.getItem("authToken")  ? (<Layout><Vendor_details/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/employees/:id" element={localStorage.getItem("authToken") ? (<Layout><EditEmployee/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
-          <Route path="location/edit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><EditLocation/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/location/edit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><EditLocation/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/editproduct/:id" element={<Layout><EditProduct/></Layout>}/>
           <Route path="/editasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><EditAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
-          <Route path="/assignasset/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/assignasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignedit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetEdit/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignlist/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetList/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignshow/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignListShow/></Layout>) : (<Navigate replace to={"/login"}/>)}  />

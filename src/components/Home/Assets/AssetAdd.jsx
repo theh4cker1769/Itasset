@@ -136,7 +136,7 @@ const AssetAdd = ({ sidebarOpen }) => {
           popup: 'animate__animated animate__fadeOutUp'
         }
       })
-      navigate('/Home/Addlist');
+      navigate('Addlist');
     } catch (error) {
       console.error(error);
     }

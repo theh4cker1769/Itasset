@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./ProfileSection.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faTrashCan, faPen, faPhone, faEnvelope, faUserPlus, faChartSimple, faLocationDot, faUser,faShareAlt,} from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan, faPen, faPhone, faEnvelope, faUserPlus, faChartSimple, faLocationDot, faUser, faShareAlt, } from "@fortawesome/free-solid-svg-icons";
 import adminImage from "../Assets/admin1.jpg";
 import { Link } from "react-router-dom";
 import ProfileSecondSection from "./ProfileSecondSection";
@@ -31,14 +31,67 @@ const ProfileSection = ({ sidebarOpen }) => {
         // console.log(response.data.data);
         setAdminData(response.data.data);
         // setCompanyData(response.data.company);
-       } catch (error) {
+      } catch (error) {
         setError("Error fetching data.");
       }
     };
-   fetchData();
+    fetchData();
   }, []);
 
-   return (
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null);
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileUpload = async (event) => {
+    const uploadedFile = await event.target.files[0];
+    setSelectedImage(uploadedFile);
+    console.log('Uploaded file:', uploadedFile.name, 'Size:', uploadedFile.size);
+  };
+
+  useEffect(() => {
+    if (selectedImage) {
+      profileUpload();
+    }
+  }, [selectedImage]);
+
+  //  Profile Image Upload
+  const profileUpload = async () => {
+    const formData = new FormData();
+    formData.append('image', selectedImage);
+    formData.append('user_id', userID);
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/insertImgProfile`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log('File upload success:', data);
+    } catch (error) {
+      console.error('File upload error:', error);
+    }
+  }
+
+  // profileImage
+  const [adminImageFetch, setAdminImageFetch] = useState();
+  const profileImage = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getImgProfile?user_id=${userID}`);
+      console.log('Profile Image:', response.data.data);
+      setAdminImageFetch(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  useEffect(() => {
+    profileImage();
+  }, []);
+
+  return (
     <>
       <main id="main" className={`main-content ${sidebarOpen ? "shift-right" : ""}`} >
         <section className="section m-3">
@@ -50,7 +103,12 @@ const ProfileSection = ({ sidebarOpen }) => {
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body">
-                  <img src={adminImage} alt="Admin Avatar" style={{ width: "100%" }} />
+                  <input type="file" accept="image/*" id="fileInput" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileUpload} />
+                  {adminImageFetch ?
+                    <img src={adminImageFetch} alt="Admin Avatar" style={{ width: "100%" }} />
+                    :
+                    <img src={adminImage} alt="Admin Avatar" style={{ cursor: 'pointer', width: "100%" }} onClick={triggerFileInput} />
+                  }
                   <div className="delete-icon">
                     <FontAwesomeIcon icon={faTrashCan} />
                   </div>
@@ -75,9 +133,9 @@ const ProfileSection = ({ sidebarOpen }) => {
               </div>
             </div>
             <div className="col-md-8">
-              <ProfileSecondSection/>
+              <ProfileSecondSection />
               <br />
-                 <div className="third">
+              <div className="third">
                 <div className="summarydata">
                   <h6>
                     <FontAwesomeIcon icon={faUser} className="icon" />
@@ -113,11 +171,11 @@ const ProfileSection = ({ sidebarOpen }) => {
                           </td>
                         </tr>
                       </tr>
-                   </tbody>
+                    </tbody>
                   </table>
                 </div>
               </div>
-                   <br/><div className="third">
+              <br /><div className="third">
                 <div className="summarydata">
                   <h6>
                     <FontAwesomeIcon icon={faPhone} className="mr-3 icon" />
@@ -148,12 +206,12 @@ const ProfileSection = ({ sidebarOpen }) => {
                           <th>Company Phone</th>
                           <td>{adminData.contact_number_var}</td>
                         </tr>
-                      </tr>  
+                      </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-                <br />
+              <br />
               {/* <div className="third">
                 <div className="summarydata">
                   <h6>
