@@ -7,6 +7,8 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import axios from "axios";
+import { set } from "react-hook-form";
 
 const Product = ({ sidebarOpen }) => {
   const userID = localStorage.getItem("userID");
@@ -22,13 +24,15 @@ const Product = ({ sidebarOpen }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_BASE_URL + `/api/product?user_id=${userID}&company_id=${companyID}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setProducts(data.data);
+      const response = await axios.get(process.env.REACT_APP_API_BASE_URL + `/api/product`, {
+        params: {
+          user_id: localStorage.getItem("userID"),
+          company_id: localStorage.getItem("companyID")
+        }
+      });
+      setProducts(response.data.data);
     } catch (error) {
+      console.error("Error fetching products:", error);
       console.log("unsuccess");
     }
   };
@@ -156,15 +160,21 @@ const Product = ({ sidebarOpen }) => {
     }
   };
 
-  const filterData = () => {
-    return products.filter((product) =>
-      product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  };
+  // const filterData = () => {
+  //   if (products.length > 0) {
+  //     return products.filter((product) =>
+  //       product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+  //   }
+  // };
+
+  const filterData = products.filter((product) =>
+    product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filterData().slice(
+  const currentProducts = filterData.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -320,8 +330,8 @@ const Product = ({ sidebarOpen }) => {
               <div className="col-sm-12 col-md-5">
                 <div className="dataTables_info">
                   Showing {indexOfFirstProduct + 1} to{" "}
-                  {Math.min(indexOfLastProduct, filterData().length)} of{" "}
-                  {filterData().length} entries
+                  {Math.min(indexOfLastProduct, filterData.length)} of{" "}
+                  {filterData.length} entries
                 </div>
               </div>
 
@@ -329,7 +339,7 @@ const Product = ({ sidebarOpen }) => {
                 <nav aria-label="Page navigation example" id="pagi-product">
                   <ul className="pagination">
                     {Array.from({
-                      length: Math.ceil(filterData().length / productsPerPage),
+                      length: Math.ceil(filterData.length / productsPerPage),
                     }).map((_, index) => (
                       <li
                         key={index}

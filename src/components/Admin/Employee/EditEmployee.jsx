@@ -22,6 +22,7 @@ const EditEmployee = ({ sidebarOpen }) => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
             const data = await response.json();
+            console.log(data.locations, "locations");
             setLocations(data.locations);
             console.log(data, "locations");
         } catch (error) {
@@ -87,7 +88,7 @@ const EditEmployee = ({ sidebarOpen }) => {
     const updateEmployee = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`https://apis.itassetmgt.com:8443/api/v1/employee/${params.id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/${params.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -134,7 +135,7 @@ const EditEmployee = ({ sidebarOpen }) => {
                                     <select className="form-control" value={location} onChange={(e) => setLocation(parseInt(e.target.value, 10))} >
                                         <option value>--Choose your location--</option>
                                         {locations.map((item) =>
-                                            <option key={item.id} value={item.id}>{item.office_name}</option>
+                                            <option key={item.location_id} value={item.office_name}>{item.office_name}</option>
                                         )}
                                     </select>
                                 </div>

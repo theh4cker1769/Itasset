@@ -63,9 +63,9 @@ const Sidebar = ({ isOpen, toggle }) => {
                   <li id="dropmenu_asset">
                     <NavLink to={"/addlist"} activeClassName="active-link" onClick={() => setActivePath("/addlist")}>List</NavLink>
                   </li>
-                  <li id="dropmenu_asset">
+                  {/* <li id="dropmenu_asset">
                     <NavLink to={"/assignasset"} activeClassName="active-link" onClick={() => setActivePath("/assignasset")}>Assigned Assets</NavLink>
-                  </li>
+                  </li> */}
                 </section>
               </div>
             </div>

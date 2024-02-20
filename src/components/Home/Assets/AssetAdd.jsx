@@ -50,6 +50,24 @@ const AssetAdd = ({ sidebarOpen }) => {
     fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`, setProductTypes);
   }, [])
 
+  // For Products
+  useEffect(() => {
+    const fetchDataProducts = async () => {
+      try {
+        const response = await axios.get(process.env.REACT_APP_API_BASE_URL + `/api/product`, {
+          params: {
+            user_id: localStorage.getItem("userID"),
+            company_id: localStorage.getItem("companyID")
+          }
+        });
+        setProducts(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataProducts()
+  }, [])
+
   // For vendors
   useEffect(() => {
     const fetchDataVendors = async () => {
@@ -71,12 +89,12 @@ const AssetAdd = ({ sidebarOpen }) => {
   useEffect(() => {
     const fetchDataVendors = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setLocations(data.locations);
+        setLocations(data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

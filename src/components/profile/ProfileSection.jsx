@@ -62,6 +62,7 @@ const ProfileSection = ({ sidebarOpen }) => {
     const formData = new FormData();
     formData.append('image', selectedImage);
     formData.append('user_id', userID);
+    console.log('Form data:', formData);
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/insertImgProfile`, {

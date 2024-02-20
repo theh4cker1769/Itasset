@@ -32,9 +32,10 @@ const AddEmployee = ({ sidebarOpen }) => {
 
     const fetchLocation = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
             const data = await response.json();
-            setLocations(data.locations);
+            // console.log(data.data, "locations");
+            setLocations(data.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -42,12 +43,12 @@ const AddEmployee = ({ sidebarOpen }) => {
 
     const fetchDeparment = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/data_departments?user_id=${userID}&company_id=${companyID}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
-            setData(jsonData);
+            setData(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }

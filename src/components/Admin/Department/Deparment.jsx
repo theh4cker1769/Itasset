@@ -17,7 +17,7 @@ const Department = ({ sidebarOpen }) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/data_departments?user_id=${userID}&company_id=${companyID}`);
       const data = await response.json();
-      // console.log("Department Data:", data.data);
+      console.log("Department Data:", data.data);
       setData(data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
