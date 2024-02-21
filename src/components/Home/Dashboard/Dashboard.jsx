@@ -24,11 +24,13 @@ const Dashboard = ({ sidebarOpen }) => {
     }
   };
 
+  const userID = localStorage.getItem("userID");
+
   useEffect(() => {
     const fetchDataForGraph = async () => {
       try {
-        const totalData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/total/2`);
-        const costAssetsResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/totalprice/2`);      
+        const totalData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/total/${userID}`);
+        const costAssetsResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/totalprice/${userID}`);      
 
         setTotalVendors(totalData.data.data[0].total_vendors);
         setTotalEmployee(totalData.data.data[0].total_employees);

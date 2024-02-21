@@ -1,19 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const LatestSubscription = () => {
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
+
+  const [assetSubscription, setAssetSubscription] = useState([])
+  const fetchAssetSubscription = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/newsubscription?user_id=${userID}&company_id=${companyID}`);
+      const data = await response.json();
+      setAssetSubscription(data.newsubscription)
+    } catch (error) {
+      console.error("Error fetching asset purchase data:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAssetSubscription();
+  }, [])
+
   return (
     <>
       <div className="container">
         <div className="row mt-5">
           <h4 className="col-md-6">Latest Subscriptions</h4>
           <div className="col-md-6">
-            <button
-              href="#"
-              className="btn btn-primary btnn"
-              id="new_subscription_main"
-            >
-              New Subscription +
-            </button>
+            <NavLink to="/new-subscription">
+              <button
+                className="btn btn-primary btnn"
+                id="new_subscription_main"
+              >
+                New Subscription +
+              </button>
+            </NavLink>
           </div>
         </div>
       </div>
@@ -32,50 +53,16 @@ const LatestSubscription = () => {
           </thead>
 
           <tbody>
-            <tr className="odd">
-              <td>Zoho</td>
-              <td>Primium</td>
-              <td>After 01 Month</td>
-              <td>$700</td>
-              <td>Jan 20 ,2020</td>
-              <td>Credit Card</td>
-            </tr>
-
-            <tr className="odd">
-              <td>Amozon</td>
-              <td>Basic</td>
-              <td>After 01 Month</td>
-              <td>$3,500</td>
-              <td>Dec 13,2019</td>
-              <td>debit Card</td>
-            </tr>
-
-            <tr className="odd">
-              <td>Amazon prime</td>
-              <td>Standard</td>
-              <td>After 03 Months</td>
-              <td>$4,860</td>
-              <td>Oct 8,2020</td>
-              <td>Master Card</td>
-            </tr>
-
-            <tr role="row" className="odd">
-              <td>Amazon Prime</td>
-              <td>Basic</td>
-              <td>After 02 weeks</td>
-              <td>$700</td>
-              <td>Jan 20 ,2020</td>
-              <td>Credit Card</td>
-            </tr>
-
-            <tr role="row" className="odd">
-              <td>Netflex</td>
-              <td>Premium</td>
-              <td>After 01 year</td>
-              <td>$700</td>
-              <td>Jan 20 ,2020</td>
-              <td>Credit Card</td>
-            </tr>
+            {assetSubscription && assetSubscription.map((v, i) => (
+              <tr key={i} className="odd">
+                <td>{v.software_name}</td>
+                <td>{v.plan}</td>
+                <td>{v.billing_period}</td>
+                <td>{v.amount}</td>
+                <td>{v.purchase_date.slice(0,10)}</td>
+                <td>{v.payment_method}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

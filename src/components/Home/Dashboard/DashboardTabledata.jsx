@@ -1,16 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import LatestSubscription from "./LatestSubscription";
 
-const DashboardTabledata = () => {  
+const DashboardTabledata = () => {
+
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
+
+  const [assetPurchase, setAssetPurchase] = useState([])
+  const fetchAssetPurchase = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/newpurchase?user_id=${userID}&company_id=${companyID}`);
+      const data = await response.json();
+      setAssetPurchase(data.newpurchase)
+    } catch (error) {
+      console.error("Error fetching asset purchase data:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAssetPurchase();
+  }, [])
+
   return (
     <>
       <div className="container">
-      <div className="button-asset-dashboard">
-      <Link to="/addlist" className="btn btn-primary btn" id="assets-unasign-button">
+        <div className="button-asset-dashboard">
+          <Link to="/addlist" className="btn btn-primary btn" id="assets-unasign-button">
             UNASSIGN ASSETS
           </Link>
-      <Link to="/assignasset" className="btn btn-dark btn" id="assets-asign-button">
+          <Link to="/assignasset" className="btn btn-dark btn" id="assets-asign-button">
             ASSIGN ASSETS
           </Link>
         </div>
@@ -22,13 +42,14 @@ const DashboardTabledata = () => {
           </div>
 
           <div className="col-md-6">
-            <button
-              href="/home/assetadd"
-              className="btn btn-primary btnn "
-              id="new_puechse"
-            >
-              New Purchase +
-            </button>
+            <NavLink to="/new-purchase" >
+              <button
+                className="btn btn-primary btnn "
+                id="new_puechse"
+              >
+                New Purchase +
+              </button>
+            </NavLink>
           </div>
         </div>
       </div>
@@ -47,50 +68,16 @@ const DashboardTabledata = () => {
           </thead>
 
           <tbody>
-            <tr className="odd">
-              <td>iphone 7 plus</td>
-              <td>Apple</td>
-              <td>Mobile phones</td>
-              <td>$700</td>
-              <td>Jan 20 ,2020</td>
-              <td>Credit Card</td>
-            </tr>
-
-            <tr className="odd">
-              <td>Laptop inspiron 15</td>
-              <td>Dell</td>
-              <td>laptops</td>
-              <td>$3,500</td>
-              <td>Dec 13,2019</td>
-              <td>debit Card</td>
-            </tr>
-
-            <tr className="odd">
-              <td>Play station 5</td>
-              <td>Sony</td>
-              <td>Gaming</td>
-              <td>$4,860</td>
-              <td>Oct 8,2020</td>
-              <td>Master Card</td>
-            </tr>
-
-            <tr className="odd">
-              <td>iphone 7 plus</td>
-              <td>Apple</td>
-              <td>Mobile phones</td>
-              <td>$700</td>
-              <td>Jan 20 ,2020</td>
-              <td>Credit Card</td>
-            </tr>
-
-            <tr className="odd">
-              <td>iphone 7 plus</td>
-              <td>Apple</td>
-              <td>Mobile phones</td>
-              <td>$700</td>
-              <td>Jan 20 ,2020</td>
-              <td>Credit Card</td>
-            </tr>
+            {assetPurchase.map((purchase) => (
+              <tr key={purchase.product_id} className="odd">
+                <td>{purchase.product_name}</td>
+                <td>{purchase.brand}</td>
+                <td>{purchase.product_category}</td>
+                <td>{purchase.purchase_price}</td>
+                <td>{purchase.purchase_date.slice(0,10)}</td>
+                <td>{purchase.purchase_method}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

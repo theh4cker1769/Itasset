@@ -46,7 +46,6 @@ const AssetAdd = ({ sidebarOpen }) => {
 
   useEffect(() => {
     fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`, setProductCategories);
-    fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/product-data`, setProducts);
     fetchData(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`, setProductTypes);
   }, [])
 
@@ -61,6 +60,7 @@ const AssetAdd = ({ sidebarOpen }) => {
           }
         });
         setProducts(response.data.data);
+        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -154,7 +154,7 @@ const AssetAdd = ({ sidebarOpen }) => {
           popup: 'animate__animated animate__fadeOutUp'
         }
       })
-      navigate('Addlist');
+      navigate('/Addlist');
     } catch (error) {
       console.error(error);
     }

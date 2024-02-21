@@ -33,6 +33,8 @@ import AssignAsset from "./components/Home/Assets/AssignAsset";
 import AssignAssetEdit from "./components/Home/Assets/AssignAssetEdit";
 import AssignAssetList from "./components/Home/Assets/AssignAssetList";
 import AssignListShow from "./components/Home/Assets/AssignListShow";
+import NewPurchase from "./components/Home/NewPurchase/NewPurchase";
+import NewSubscription from "./components/Home/NewPurchase/NewSubscription";
 
 const isAuthenticated = () => {
   // Implement your authentication logic here.
@@ -95,6 +97,8 @@ function App() {
           <Route path="/assignedit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetEdit/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignlist/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetList/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignshow/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignListShow/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/new-purchase"  element={localStorage.getItem("authToken")  ? (<Layout><NewPurchase/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/new-subscription"  element={localStorage.getItem("authToken")  ? (<Layout><NewSubscription/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path='*' element={<Nopage/>}/>
         </Routes>
       </BrowserRouter>

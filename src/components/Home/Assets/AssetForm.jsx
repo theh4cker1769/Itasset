@@ -251,7 +251,7 @@ const AssetForm = ({
               Update
             </button>
           )}
-          <Link to="/Home/Addlist" className="btn btn-dark">
+          <Link to="/Addlist" className="btn btn-dark">
             Back
           </Link>
         </div>

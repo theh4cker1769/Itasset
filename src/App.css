@@ -35,3 +35,7 @@
 .department-action i {
     cursor: pointer;
 }
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
