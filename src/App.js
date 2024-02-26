@@ -35,6 +35,7 @@ import AssignAssetList from "./components/Home/Assets/AssignAssetList";
 import AssignListShow from "./components/Home/Assets/AssignListShow";
 import NewPurchase from "./components/Home/NewPurchase/NewPurchase";
 import NewSubscription from "./components/Home/NewPurchase/NewSubscription";
+import LoginNew from "./components/Devise/LoginNew";
 
 const isAuthenticated = () => {
   // Implement your authentication logic here.
@@ -67,7 +68,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/login" element={<LoginNew/>}/>
           <Route path="/company" element={<Company />} />
           <Route path="/forgetpassword" element={ <ForgetPassword/> } />
           <Route path="/" element={localStorage.getItem("authToken")  ? (<Layout><Home/></Layout>) : (<Navigate replace to={"/login"}/>)} />

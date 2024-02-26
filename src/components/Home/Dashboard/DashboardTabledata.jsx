@@ -68,7 +68,7 @@ const DashboardTabledata = () => {
           </thead>
 
           <tbody>
-            {assetPurchase.map((purchase) => (
+            {assetPurchase && assetPurchase.map((purchase) => (
               <tr key={purchase.product_id} className="odd">
                 <td>{purchase.product_name}</td>
                 <td>{purchase.brand}</td>

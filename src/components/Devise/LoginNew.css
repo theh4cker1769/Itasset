@@ -1,0 +1,362 @@
+.login-section-itassest {
+    background-image: url(../Assets/cylsys_tech.svg);
+}
+
+.login-section-itassest .login {
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #ffffff;
+}
+
+.login-section-itassest .login h1 {
+    font-size: 80px;
+    font-weight: 700;
+    line-height: 75px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.login-section-itassest .login h2 {
+    font-size: 60px;
+    font-weight: 400;
+    line-height: 50px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #ffffff;
+    -webkit-text-fill-color: transparent;
+    /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #ffffff;
+}
+
+.login-section-itassest .login p {
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+/* login right css */
+
+.login-section-itassest .form_card .card {
+    border: 1px solid #ffffff33;
+}
+
+.login-section-itassest .form_card .card,
+.login-section-itassest .form_card .card-body {
+    background-color: transparent;
+}
+
+.login-section-itassest .form_card .card-header {
+    border: 0;
+    text-align: center;
+    padding: 20px 0 0;
+}
+
+.login-section-itassest .form_card label {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #ffffff;
+}
+
+.login-section-itassest #emailHelp {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #ffffff;
+}
+
+.login-section-itassest #passwordHelp {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #ff0000;
+}
+
+.login-section-itassest .form_card .form-control,
+.login-section-itassest .demo_request_form .form-control {
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+    color: #ffffff;
+}
+
+.login-section-itassest .forget_password {
+    padding: 20px 0;
+}
+
+.login-section-itassest .forget_password a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.login-section-itassest ::placeholder {
+    color: #ffffff;
+}
+
+.login-section-itassest .requestBtn {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
+    width: 50%;
+    text-align: center;
+    border: 1px solid;
+}
+
+.login-section-itassest .loginBtn {
+    font-family: "Poppins";
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0.01em;
+    text-align: center;
+}
+
+/* modal css */
+.login-section-itassest #requestBtn {
+    backdrop-filter: blur(4px);
+}
+
+.login-section-itassest #requestBtn .modal-content {
+    background-color: #1354926e;
+    color: #ffffff;
+}
+
+.login-section-itassest #requestBtn .modal-header {
+    background-color: #135492;
+    color: #ffffff;
+}
+
+.login-section-itassest input::placeholder {
+    color: #fff;
+}
+
+.login-section-itassest .login {
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #ffffff;
+}
+
+.login-section-itassest .login h2 {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 75px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.login-section-itassest .login h3 {
+    /* font-size: 40px;
+      font-weight: 400;
+      line-height: 50px;
+      letter-spacing: 0em;
+      text-align: left;
+      color: #ffffff;
+      -webkit-text-fill-color: transparent; 
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: #ffffff; */
+    text-shadow: 1px 0px 0px rgb(255, 255, 255),
+        -1px 0px 0px rgb(255, 255, 255), 0px 1px 0px rgb(255, 255, 255),
+        0px -1px 0px rgb(255, 255, 255);
+    color: #9074c8;
+    font-size: 40px;
+}
+
+.login-section-itassest .login p {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+/* login right css */
+
+.login-section-itassest .form_card .card {
+    border: 1px solid #ffffff33;
+}
+
+.login-section-itassest .form_card .card,
+.login-section-itassest .form_card .card-body {
+    background-color: transparent;
+}
+
+.login-section-itassest .form_card .card-header {
+    border: 0;
+    text-align: center;
+    padding: 20px 0 0;
+}
+
+.login-section-itassest .form_card label {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #ffffff;
+}
+
+.login-section-itassest #emailHelp {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #ffffff;
+}
+
+.login-section-itassest #passwordHelp {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(224, 23, 23, 0.808);
+}
+
+.login-section-itassest .form_card .form-control,
+.login-section-itassest .demo_request_form .form-control {
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+    color: #ffffff;
+}
+
+.login-section-itassest .forget_password {
+    padding: 20px 0;
+}
+
+.login-section-itassest .forget_password p {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: center;
+    color: #ffffff;
+    margin: 12px 0;
+}
+
+.login-section-itassest .forget_password a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.login-section-itassest .requestBtn {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
+    width: 50%;
+    text-align: center;
+}
+
+.login-section-itassest .loginBtn {
+    font-family: "Poppins";
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0.01em;
+    text-align: center;
+}
+
+.login-section-itassest .log {
+    width: 100%;
+    border: 1px solid #ffffff;
+}
+
+.login-section-itassest .req-btn {
+    display: none;
+}
+
+.login-section-itassest .digi-logo {
+    display: none;
+}
+
+/* modal css */
+.login-section-itassest #requestBtn {
+    backdrop-filter: blur(4px);
+}
+
+.login-section-itassest #requestBtn .modal-content {
+    /* background-image: linear-gradient(#fdfdfd, #747474); */
+    /* color: #ffffff; */
+    background-image: linear-gradient(#9f3eed, #7eaafd);
+    color: #fff;
+}
+
+.login-section-itassest #requestBtn .modal-header {
+    background-image: linear-gradient(#8D5DB9, #13204B);
+    color: #ffffff;
+}
+
+.login-section-itassest input::placeholder {
+    color: #fff;
+}
+
+@media (max-width: 300px) {
+    .login-section-itassest .share-img {
+        width: 40px;
+    }
+
+    .login-section-itassest .log {
+        width: auto !important;
+    }
+
+    .login-section-itassest .login-left {
+        display: none;
+    }
+
+    .login-section-itassest .req-btn {
+        display: block;
+        width: auto;
+    }
+
+    .login-section-itassest .req {
+        display: flex;
+    }
+
+    .login-section-itassest .digi-logo {
+        display: block;
+    }
+
+    .login-section-itassest .cylsys-logo {
+        display: none;
+    }
+
+    .login-section-itassest .card-header {
+        text-align: center;
+    }
+}
+
+.login-section-itassest ::placeholder {
+    color: rgb(255, 255, 255) !important;
+    opacity: 1;
+    /* Firefox */
+}
+
+.login-section-itassest ::-ms-input-placeholder {
+    /* Edge 12-18 */
+    color: rgb(255, 255, 255) !important;
+}
+
+.login-section-itassest .phone-no-with-county {
+    display: flex;
+    gap: 10px;
+}
+
+.login-section-itassest .phone-no-with-county .form-select {
+    margin-right: 0;
+}
