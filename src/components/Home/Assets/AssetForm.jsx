@@ -39,8 +39,8 @@ const AssetForm = ({
   const purchaseTypes = [
     { id: 1, purchase_type: "Owned" },
     { id: 2, purchase_type: "Rented" },
-    { id: 3, purchase_type: "Leased"},
-    { id: 4, purchase_type: "Subscription"}
+    { id: 3, purchase_type: "Leased" },
+    { id: 4, purchase_type: "Subscription" }
   ]
 
   return (
@@ -105,7 +105,7 @@ const AssetForm = ({
             ))}
           </select>
         </div>
-        
+
         <div className="col-md-3">
           <label htmlFor="vendor">
             Vendor<span style={{ color: "red" }}> *</span>
@@ -214,18 +214,7 @@ const AssetForm = ({
           </select>
         </div>
 
-        <div className="col-md-3">
-          <label htmlFor="Desc">
-            Description<span style={{ color: "red" }}> *</span>
-          </label>
-          <br />
-          <input
-            type="text"
-            className="form-control"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+
         <div className="col-md-3">
           <label htmlFor="assetName">
             Serial Number<span style={{ color: "red" }}> *</span>
@@ -237,6 +226,20 @@ const AssetForm = ({
             value={serial_number}
             onChange={(e) => setSerialNumber(e.target.value)}
           />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-3">
+          <label htmlFor="Desc">
+            Description<span style={{ color: "red" }}> *</span>
+          </label>
+          <br />
+          <textarea
+            type="text"
+            className="form-control"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
         </div>
       </div>
       <br />

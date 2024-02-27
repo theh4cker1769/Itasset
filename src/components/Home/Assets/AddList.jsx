@@ -261,7 +261,10 @@ const AddList = ({ sidebarOpen }) => {
                         Current State
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
-                        Assign
+                        Assigned To
+                      </th>
+                      <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
+                        Asset Status
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
                         Action
@@ -290,13 +293,24 @@ const AddList = ({ sidebarOpen }) => {
                         </td>
                         <td>
                           {asset.name ?
-                            <>
+                            <NavLink to={`/viewassignasset/${asset.asset_id}`}>
                               {asset.name}
+                            </NavLink>
+                            :
+                            <NavLink to={`/assignasset/${asset.asset_id}`} className="btn btn-primary">
+                              Assign
+                            </NavLink>
+                          }
+                        </td>
+                        <td>
+                        {asset.name ?
+                            <>
+                            <button className="btn btn-warning">Repair</button>
+                            &nbsp;
+                            <button className="btn btn-danger">Return</button>
                             </>
                             :
-                            <Link to={`/assignasset/${asset.asset_id}`} className="btn btn-primary">
-                              Assign
-                            </Link>
+                            <></>
                           }
                         </td>
                         <td>

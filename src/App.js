@@ -36,6 +36,7 @@ import AssignListShow from "./components/Home/Assets/AssignListShow";
 import NewPurchase from "./components/Home/NewPurchase/NewPurchase";
 import NewSubscription from "./components/Home/NewPurchase/NewSubscription";
 import LoginNew from "./components/Devise/LoginNew";
+import ViewAssignAsset from "./components/Home/Assets/ViewAssignAsset";
 
 const isAuthenticated = () => {
   // Implement your authentication logic here.
@@ -96,6 +97,7 @@ function App() {
           <Route path="/editproduct/:id" element={<Layout><EditProduct/></Layout>}/>
           <Route path="/editasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><EditAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/viewassignasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><ViewAssignAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignedit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetEdit/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignlist/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetList/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignshow/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignListShow/></Layout>) : (<Navigate replace to={"/login"}/>)}  />

@@ -139,9 +139,9 @@ const Dashboard = ({ sidebarOpen }) => {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <Graph chartData={graphData} />
-            </div>
+            </div> */}
 
             <div className="mt-5">
               <DashboardTabledata />
