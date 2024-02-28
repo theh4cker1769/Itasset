@@ -15,6 +15,9 @@ const AddList = ({ sidebarOpen }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
 
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
+
   const handleCheckboxChange = (assetId) => {
     if (selectedAssets.includes(assetId)) {
       setSelectedAssets(selectedAssets.filter((id) => id !== assetId));
@@ -87,17 +90,103 @@ const AddList = ({ sidebarOpen }) => {
     assetData();
   }, []);
 
-  console.log(assets);
+  // For Product Categories
+  const [productCategories, setProductCategories] = useState([]);
+  useEffect(() => {
+    const fetchDataProductCategory = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`);
+        const data = await response.json();
+        setProductCategories(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataProductCategory()
+  }, [])
+
+  const getProductCategory = (id) => {
+    const category = productCategories.find((category) => category.id == id);
+    return category ? category.ProductCategory : "Unknow";
+  };
+
+
+  // For Product Types
+  const [productTypes, setProductTypes] = useState([]);
+  useEffect(() => {
+    const fetchDataProductTypes = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`);
+        const data = await response.json();
+        setProductTypes(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataProductTypes()
+  }, [])
+
+  const getProductType = (id) => {
+    const type = productTypes.find((type) => type.product_type_id == id);
+    return type ? type.product_type_name : "Unknow";
+  };
+
+  // For Vendors
+  const [vendors, setVendors] = useState([]);
+  useEffect(() => {
+    const fetchDataVendors = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors?user_id=${userID}&company_id=${companyID}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setVendors(data.vendors);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataVendors()
+  }, [])
+
+  const getVendor = (id) => {
+    const vendor = vendors.find((vendor) => vendor.vendor_id == id);
+    return vendor ? vendor.vendor_name : "Unknow";
+  };
+
+
+  // For Locations
+  const [locations, setLocations] = useState([]);
+  useEffect(() => {
+    const fetchDataLocations = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setLocations(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataLocations()
+  }, [])
+
+  const getLocations = (id) => {
+    const location = locations.find((location) => location.location_id == id);
+    return location ? location.office_name : "Unknow";
+  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-  const filterAssets = Array.isArray(assets) ? assets.filter((asset) =>
-    asset.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    asset.asset_name.toLowerCase() === searchTerm.toLowerCase() ||
-    asset.product_name.toLowerCase() === searchTerm.toLowerCase() || asset.product_type.toLowerCase() === searchTerm.toLowerCase()
-    || asset.serial_number.toLowerCase() === searchTerm.toLowerCase()
-  ) : [];
+
+  // const filterAssets = Array.isArray(assets) ? assets.filter((asset) =>
+  //   asset.asset_name.toLowerCase() === searchTerm.toLowerCase() ||
+  //   asset.product_name.toLowerCase() === searchTerm.toLowerCase() ||
+  //   asset.serial_number.toLowerCase() === searchTerm.toLowerCase()
+  // ) : [];
 
   const confirm = (id) => {
     confirmAlert({
@@ -132,10 +221,10 @@ const AddList = ({ sidebarOpen }) => {
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentAssets = filterAssets.slice(indexOfFirstEntry, indexOfLastEntry);
+  const currentAssets = assets.slice(indexOfFirstEntry, indexOfLastEntry);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filterAssets.length / entriesPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(assets.length / entriesPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -167,7 +256,6 @@ const AddList = ({ sidebarOpen }) => {
     // Use FileSaver to save the file
     saveAs(blob, 'Data.xlsx');
   }
-
 
   return (
     <>
@@ -249,6 +337,9 @@ const AddList = ({ sidebarOpen }) => {
                         Serial Number
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">
+                        Products Category
+                      </th>
+                      <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">
                         Products type
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">
@@ -258,14 +349,17 @@ const AddList = ({ sidebarOpen }) => {
                         Vendor
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">
+                        Location
+                      </th>
+                      <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">
                         Current State
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
                         Assigned To
                       </th>
-                      <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
+                      {/* <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
                         Asset Status
-                      </th>
+                      </th> */}
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
                         Action
                       </th>
@@ -283,9 +377,11 @@ const AddList = ({ sidebarOpen }) => {
                         <td className="sorting_1">{index + 1}</td>
                         <td className="">{asset.asset_name}</td>
                         <td>{asset.serial_number}</td>
-                        <td>{asset.product_type}</td>
+                        <td>{getProductCategory(asset.product_category)}</td>
+                        <td>{getProductType(asset.product_type)}</td>
                         <td>{asset.product_name}</td>
-                        <td>{asset.vendor}</td>
+                        <td>{getVendor(asset.vendor)}</td>
+                        <td>{getLocations(asset.address)}</td>
                         <td>
                           <div className="form-check form-switch switch-align">
                             <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.asset_id}`} onChange={() => handleToggle(asset.asset_id, !asset.is_active)} />
@@ -302,7 +398,7 @@ const AddList = ({ sidebarOpen }) => {
                             </NavLink>
                           }
                         </td>
-                        <td>
+                        {/* <td>
                         {asset.name ?
                             <>
                             <button className="btn btn-warning">Repair</button>
@@ -312,7 +408,7 @@ const AddList = ({ sidebarOpen }) => {
                             :
                             <></>
                           }
-                        </td>
+                        </td> */}
                         <td>
                           <div style={{ color: "#0d6efd" }}>
                             <Link to={`/editasset/${asset.asset_id}`} className="ey1">
@@ -341,7 +437,7 @@ const AddList = ({ sidebarOpen }) => {
             <div className="row mt-3">
               <div className="col-sm-12 col-md-5">
                 <div className="dataTables_info" id="DataTables_Table_3_info" role="status" aria-live="polite">
-                  Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, filterAssets.length)} of {filterAssets.length} entries
+                  Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, assets.length)} of {assets.length} entries
                 </div>
               </div>
               <div className="col-sm-12 col-md-7">

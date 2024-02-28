@@ -40,6 +40,52 @@ const Employee = ({ sidebarOpen }) => {
     );
   };
 
+  // For Loaction
+  const [locations, setLocations] = useState([]);
+  const fetchLocation = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
+      const data = await response.json();
+      // console.log(data.data, "locations");
+      setLocations(data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getLocation = (id) => {
+    const location = locations.find((location) => location.location_id == id);
+    return location ? location.office_name : "Unknown";
+  };
+
+  // For Department
+  const [department, setDepartment] = useState([]);
+  const fetchDeparment = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/data_departments?user_id=${userID}&company_id=${companyID}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      const jsonData = await response.json();
+      console.log(jsonData.data, "data");
+      setDepartment(jsonData.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+  const getDepartment = (id) => {
+    const dept = department.find((dept) => dept.department_id == id);
+    return dept ? dept.department_name : "Unknown";
+  };
+
+  useEffect(() => {
+    fetchDeparment();
+    fetchLocation();
+  }, [])
+
+
   const updateStatus = async (id, newStatus) => {
     try {
       const response = await fetch(
@@ -147,6 +193,7 @@ const Employee = ({ sidebarOpen }) => {
                     <th className="sorting">Email</th>
                     <th className="sorting" >Contact Number</th>
                     <th className="sorting" >Location</th>
+                    <th className="sorting"> Department</th>
                     <th className="sorting"> Status</th>
                     <th className="sorting">Action</th>
                   </tr>
@@ -160,7 +207,8 @@ const Employee = ({ sidebarOpen }) => {
                       <td>{item.name}</td>
                       <td>{item.email}</td>
                       <td>{item.phone}</td>
-                      <td>{item.location}</td>
+                      <td>{getLocation(item.location)}</td>
+                      <td>{getDepartment(item.department_id)}</td>
                       <td>
                         <div className="form-check form-switch">
                           <input className="form-check-input" type="checkbox" value={status} id={`flexSwitchCheckChecked-${item.id}`} defaultChecked={item.is_active} onChange={(e) => updateStatus(item.employee_id, e.target.checked)} />

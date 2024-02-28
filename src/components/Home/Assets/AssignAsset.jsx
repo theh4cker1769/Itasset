@@ -37,6 +37,7 @@ function AssignAsset() {
   const [formData, setFormData] = useState({
     selectedEmployeeId: "",
     assign_description: "",
+    assign_date: new Date().toISOString().slice(0,10),
   });
 
   const [imagePreview, setImagePreview] = useState(null);
@@ -120,7 +121,11 @@ function AssignAsset() {
               <input type="file" accept="image/*" id="fileInput" onChange={handleImageChange} />
             </div>
 
-
+            <div className="col-md-4">
+              <label htmlFor="">Assign Date</label>
+              <input type="date" className="form-control" name="assign_date" id="assign_date"
+                value={formData.assign_date} onChange={handleInputChange} />
+            </div>
 
           </div>
           <div className="row">

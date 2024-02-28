@@ -134,6 +134,53 @@ const Product = ({ sidebarOpen }) => {
   };
 
 
+  // for product type
+  const [productTypes, setProductTypes] = useState([]);
+  useEffect(() => {
+    const fetchProductTypes = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/producttype`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProductTypes(data.data);
+      } catch (error) {
+        console.error("Error fetching product types:", error);
+      }
+    };
+    fetchProductTypes();
+  }, []);
+
+  const getProductTypeName = (productTypeId) => {
+    const productType = productTypes.find(type => type.product_type_id == productTypeId);
+    return productType ? productType.product_type_name : 'Unknown';
+  };
+
+
+  // for product category
+  const [productCategories, setProductCategories] = useState([]);
+  useEffect(() => {
+    const fetchProductCategories = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/productCategory`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProductCategories(data.data);
+      } catch (error) {
+        console.error("Error fetching product categories:", error);
+      }
+    };
+    fetchProductCategories();
+  }, []);
+
+  const getProductCategoryName = (productCategoryId) => {
+    const productCategory = productCategories.find(category => category.id == productCategoryId);
+    return productCategory ? productCategory.ProductCategory : 'Unknown';
+  };
+
   const handleToggle = async (id, newStatus) => {
     try {
       const response = await fetch(process.env.REACT_APP_API_BASE_URL + '/api/product/status/' + id,
@@ -287,8 +334,8 @@ const Product = ({ sidebarOpen }) => {
                         </td>
                         <td className="">{index + 1}</td>
                         <td className="sorting_1">{product.product_name}</td>
-                        <td>{product.product_type}</td>
-                        <td>{product.product_category}</td>
+                        <td>{getProductTypeName(product.product_type) || 'Loading...'}</td>
+                        <td>{getProductCategoryName(product.product_category) || 'Loading...'}</td>
                         <td>
                           <div className="form-check form-switch">
                             <input

@@ -18,26 +18,28 @@ const EditEmployee = ({ sidebarOpen }) => {
     const params = useParams();
     const [locations, setLocations] = useState([]);
 
+    const userID = localStorage.getItem("userID");
+    const companyID = localStorage.getItem("companyID");
+
     const fetchLocation = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
             const data = await response.json();
-            console.log(data.locations, "locations");
-            setLocations(data.locations);
-            console.log(data, "locations");
+            setLocations(data.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
+    console.log(locations)
 
     const fetchDeparment = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/departments`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/data_departments?user_id=${userID}&company_id=${companyID}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
-            setFulldeparment(jsonData);
+            setFulldeparment(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -45,7 +47,7 @@ const EditEmployee = ({ sidebarOpen }) => {
 
     const fetchEmployee = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/employees/user_id/2`);
+            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/getdata_employees?user_id=${userID}&company_id=${companyID}`);
             if (!response.ok) {
                 throw new Error("Network response was not ok.");
             }
@@ -69,7 +71,7 @@ const EditEmployee = ({ sidebarOpen }) => {
                 setEmail(employeeData.data[0].email);
                 setEmployee_id(employeeData.data[0].employee_id)
                 setPhone(employeeData.data[0].phone)
-                setLocation(employeeData.data[0].location_id)
+                setLocation(employeeData.data[0].location)
                 setReportManager(employeeData.data[0].reporting_manager)
                 setDepartment(employeeData.data[0].department_id)
             }
@@ -132,10 +134,10 @@ const EditEmployee = ({ sidebarOpen }) => {
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="#">Locations</label>
-                                    <select className="form-control" value={location} onChange={(e) => setLocation(parseInt(e.target.value, 10))} >
+                                    <select className="form-control" value={location} onChange={(e) => setLocation(e.target.value, 10)} >
                                         <option value>--Choose your location--</option>
                                         {locations.map((item) =>
-                                            <option key={item.location_id} value={item.office_name}>{item.office_name}</option>
+                                            <option key={item.location_id} value={item.location_id}>{item.office_name}</option>
                                         )}
                                     </select>
                                 </div>
@@ -150,10 +152,10 @@ const EditEmployee = ({ sidebarOpen }) => {
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="#">Department</label>
-                                    <select className="form-control" value={department} onChange={(e) => setDepartment(parseInt(e.target.value, 10))}>
+                                    <select className="form-control" value={department} onChange={(e) => setDepartment(e.target.value, 10)}>
                                         <option value>--Choose Department--</option>
                                         {fullDeparment.map((item) =>
-                                            <option key={item.id} value={item.id}>{item.department_name}</option>
+                                            <option key={item.department_id} value={item.department_id}>{item.department_name}</option>
                                         )}
                                     </select>
                                 </div>

@@ -60,7 +60,7 @@ const AssetForm = ({
           >
             <option value="">--Choose a Product Category--</option>
             {productCategories.map((productCategory) => (
-              <option key={productCategory.id} value={productCategory.ProductCategory}>
+              <option key={productCategory.id} value={productCategory.id}>
                 {productCategory.ProductCategory}
               </option>
             ))}
@@ -80,7 +80,7 @@ const AssetForm = ({
           >
             <option value="">--Choose a Product--</option>
             {productTypes.map((productType) => (
-              <option key={productType.product_type_id} value={productType.product_type_name}>
+              <option key={productType.product_type_id} value={productType.product_type_id}>
                 {productType.product_type_name}
               </option>
             ))}
@@ -99,7 +99,7 @@ const AssetForm = ({
           >
             <option value="">--Choose a Product--</option>
             {products.map((product) => (
-              <option key={product.id} value={product.product_name}>
+              <option key={product.id} value={product.id}>
                 {product.product_name}
               </option>
             ))}
@@ -119,7 +119,7 @@ const AssetForm = ({
           >
             <option value="">--Choose a Vendor--</option>
             {vendors.map((vendor) => (
-              <option key={vendor.vendor_id} value={vendor.vendor_name}>
+              <option key={vendor.vendor_id} value={vendor.vendor_id}>
                 {vendor.vendor_name}
               </option>
             ))}
@@ -154,7 +154,7 @@ const AssetForm = ({
         </div>
         <div class="col-md-3">
           <label htmlFor="Address">
-            Address<span style={{ color: "red" }}> *</span>
+            Location<span style={{ color: "red" }}> *</span>
           </label>
           <select
             class="form-control"
@@ -163,7 +163,7 @@ const AssetForm = ({
           >
             <option>--select option--</option>
             {locations.map((loc) => (
-              <option key={loc.location_id} value={loc.office_name}>
+              <option key={loc.location_id} value={loc.location_id}>
                 {loc.office_name}
               </option>
             ))}

@@ -139,8 +139,6 @@ const LocationForm = ({
                 </div>
 
                 <div className="d-flex gap-2 mt-2">
-                    <input className="mt-1" type="checkbox" />
-                    <label>Make this your default location</label>
                     <br />
                     <button className='btn btn-primary'
                         onClick={() => {

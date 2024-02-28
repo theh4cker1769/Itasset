@@ -60,7 +60,6 @@ const AssetAdd = ({ sidebarOpen }) => {
           }
         });
         setProducts(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

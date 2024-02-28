@@ -17,7 +17,7 @@ const AddEmployee = ({ sidebarOpen }) => {
     const [department, setDepartment] = useState();
     const [employeeName, setEmployeeName] = useState([])
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
+    const [departmentData, setDepartmentData] = useState([]);
     const [locations, setLocations] = useState([]);
 
     const isEmailValid = (email) => {
@@ -34,7 +34,6 @@ const AddEmployee = ({ sidebarOpen }) => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
             const data = await response.json();
-            // console.log(data.data, "locations");
             setLocations(data.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -48,7 +47,7 @@ const AddEmployee = ({ sidebarOpen }) => {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
-            setData(jsonData.data);
+            setDepartmentData(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -61,7 +60,6 @@ const AddEmployee = ({ sidebarOpen }) => {
                 throw new Error("Network response was not ok.");
             }
             const jsonData = await response.json();
-            console.log(jsonData.data, "data");
             setEmployeeName(jsonData.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -165,7 +163,7 @@ const AddEmployee = ({ sidebarOpen }) => {
                                         <select className="form-control" value={location} onChange={(e) => setLocation(e.target.value)} >
                                             <option value>--Choose your location--</option>
                                             {locations.map((item) =>
-                                                <option key={item.id} value={item.id}>{item.office_name}</option>
+                                                <option key={item.location_id} value={item.location_id}>{item.office_name}</option>
                                             )}
                                         </select>
                                     </div>
@@ -175,7 +173,7 @@ const AddEmployee = ({ sidebarOpen }) => {
                                         <select className="form-control" value={reporting_manager} onChange={(e) => setreportManager(e.target.value)}>
                                             <option value>--Choose Select Reporting Manager--</option>
                                             {employeeName.map((item) =>
-                                                <option>{item.name}</option>
+                                                <option value={item.name}>{item.name}</option>
                                             )}
                                         </select>
                                     </div>
@@ -188,8 +186,8 @@ const AddEmployee = ({ sidebarOpen }) => {
                                             onChange={(e) => setDepartment(e.target.value)}
                                         >
                                             <option value="">--Choose Department--</option>
-                                            {data.map((item) => (
-                                                <option key={item.id} value={item.id}>
+                                            {departmentData.map((item) => (
+                                                <option key={item.id} value={item.department_id}>
                                                     {item.department_name}
                                                 </option>
                                             ))}

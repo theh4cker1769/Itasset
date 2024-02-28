@@ -48,6 +48,8 @@ const Add_Product = ({ sidebarOpen }) => {
     fetchProductCategories();
   }, []);
 
+  console.log("Product Categories:", productCategories);
+
   const handleProductCategoryChange = (e) => {
     const selectedValue = e.target.value;
     console.log("Selected Product Category:", selectedValue);
@@ -115,7 +117,7 @@ const Add_Product = ({ sidebarOpen }) => {
                   >
                     <option value="">--Choose a Category--</option>
                     {productCategories.map((product) => (
-                      <option key={product.id} value={product.ProductCategory}>
+                      <option key={product.id} value={product.id}>
                         {product.ProductCategory}
                       </option>
                     ))}
@@ -133,7 +135,7 @@ const Add_Product = ({ sidebarOpen }) => {
                   >
                     <option value="">--Choose a Product Type--</option>
                     {productTypes.map((productType) => (
-                      <option key={productType.product_type_id} value={productType.product_type_name}>
+                      <option key={productType.product_type_id} value={productType.product_type_id}>
                         {productType.product_type_name}
                       </option>
                     ))}

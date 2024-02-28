@@ -8,6 +8,27 @@ const LocationTable = ({
   sendStateData
   // ... other props
 }) => {
+  // For country Name
+  const [countryNames, setCountryNames] = useState([]);
+  useEffect(() => {
+    currentItems.forEach(item => {
+      fetchCountryName(item.country);
+    });
+  }, [currentItems]);
+
+  const fetchCountryName = async (id) => {
+    if (!countryNames[id]) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/countries/countriesid/${id}`);
+        const data = await response.json();
+        // console.log('Country Name:', data.data);
+        setCountryNames(prev => ({ ...prev, [id]: data.data.name }));
+      } catch (error) {
+        console.error('Error fetching country name:', error);
+      }
+    }
+  }
+
   // For State Name
   const [stateNames, setStateNames] = useState([]);
   useEffect(() => {
@@ -119,6 +140,16 @@ const LocationTable = ({
               colSpan={1}
               aria-label="Start date: activate to sort column ascending"
             >
+              Country
+            </th>
+            <th
+              className="sorting"
+              tabIndex={0}
+              aria-controls="DataTables_Table_3"
+              rowSpan={1}
+              colSpan={1}
+              aria-label="Start date: activate to sort column ascending"
+            >
               State
             </th>
             <th
@@ -177,6 +208,7 @@ const LocationTable = ({
               <td>{item.office_name}</td>
               <td>{item.contact_person_name}</td>
               {/* <td>{stateName}</td> */}
+              <td>{countryNames[item.country] || 'Loading...'}</td>
               <td>{stateNames[item.state_province] || 'Loading...'}</td>
               <td>{cityNames[item.city] || 'Loading...'}</td>
               <td>{item.zip_code}</td>
