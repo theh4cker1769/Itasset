@@ -207,7 +207,7 @@ const AddList = ({ sidebarOpen }) => {
   const handleDelete = async (id) => {
     try {
       await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assets/${id}`, { method: 'DELETE' });
-      setAssets(assets.filter(asset => asset.id !== id));
+      setAssets(assets.filter(asset => asset.serial_number !== id));
     }
     catch (error) {
       console.error(error);
@@ -355,22 +355,16 @@ const AddList = ({ sidebarOpen }) => {
                         Current State
                       </th>
                       <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
-                        Assigned To
-                      </th>
-                      {/* <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
-                        Asset Status
-                      </th> */}
-                      <th className="sorting" tabIndex="0" aria-controls="DataTables_Table_3" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
                         Action
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentAssets.map((asset, index) => (
-                      <tr role="row" className="odd" key={asset.asset_id}>
+                      <tr role="row" className="odd" key={asset.serial_number}>
                         <td className="dt-body-center" tabIndex="0">
                           <div className="dt-checkbox">
-                            <input type="checkbox" name="id[]" value={asset.asset_id} onChange={() => handleCheckboxChange(asset.id)} />
+                            <input type="checkbox" name="id[]" value={asset.serial_number} onChange={() => handleCheckboxChange(asset.serial_number)} />
                             <span className="dt-checkbox-label"></span>
                           </div>
                         </td>
@@ -387,17 +381,6 @@ const AddList = ({ sidebarOpen }) => {
                             <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.asset_id}`} onChange={() => handleToggle(asset.asset_id, !asset.is_active)} />
                           </div>
                         </td>
-                        <td>
-                          {asset.name ?
-                            <NavLink to={`/viewassignasset/${asset.asset_id}`}>
-                              {asset.name}
-                            </NavLink>
-                            :
-                            <NavLink to={`/assignasset/${asset.asset_id}`} className="btn btn-primary">
-                              Assign
-                            </NavLink>
-                          }
-                        </td>
                         {/* <td>
                         {asset.name ?
                             <>
@@ -411,7 +394,7 @@ const AddList = ({ sidebarOpen }) => {
                         </td> */}
                         <td>
                           <div style={{ color: "#0d6efd" }}>
-                            <Link to={`/editasset/${asset.asset_id}`} className="ey1">
+                            <Link to={`/editasset/${asset.serial_number}`} className="ey1">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
@@ -419,7 +402,7 @@ const AddList = ({ sidebarOpen }) => {
 
                             </Link>
                             &nbsp;
-                            <button onClick={() => confirm(asset.asset_id)} >
+                            <button onClick={() => confirm(asset.serial_number)} >
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16" >
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>

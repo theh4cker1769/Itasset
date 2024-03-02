@@ -39,3 +39,11 @@
 .react-datepicker-wrapper {
     width: 100%;
 }
+
+.assign-asset-table {
+    vertical-align: middle;
+}
+
+.assign-asset-table td img {
+    width: 50px;
+}

@@ -76,7 +76,6 @@ const Navbar = () => {
   const profileImage = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/getImgProfile?user_id=${userID}`);
-      console.log('Profile Image:', response.data.data);
       setAdminImageFetch(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);

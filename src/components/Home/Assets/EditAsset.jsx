@@ -22,7 +22,8 @@ const EditAsset = ({ sidebarOpen }) => {
   const [serial_number, setSerialNumber] = useState("");
   const [id, setId] = useState("")
 
-  console.log(productCategories)
+  const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
 
   const navigate = useNavigate();
   const params = useParams();
@@ -50,8 +51,9 @@ const EditAsset = ({ sidebarOpen }) => {
   // For vendors
   useEffect(() => {
     const fetchDataVendors = async () => {
+      
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/vendors?user_id=${userID}&company_id=${companyID}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -66,19 +68,19 @@ const EditAsset = ({ sidebarOpen }) => {
 
   // For Locations
   useEffect(() => {
-    const fetchDataVendors = async () => {
+    const fetchDataLocations = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/locations`);
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setLocations(data.locations);
+        setLocations(data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchDataVendors()
+    fetchDataLocations()
   }, [])
 
   const convertDate = (dateString) => {
@@ -91,7 +93,7 @@ const EditAsset = ({ sidebarOpen }) => {
 
   const setAssetData = (assetData) => {
     if (assetData) {
-      setId(assetData[0].asset_id);
+      // setId(assetData[0].asset_id);
       setAssetName(assetData[0].asset_name);
       setDescription(assetData[0].description);
       setPrice(assetData[0].price);
@@ -110,7 +112,7 @@ const EditAsset = ({ sidebarOpen }) => {
 
   const updateData = async (e) => {
     e.preventDefault();
-    const url = `${process.env.REACT_APP_API_BASE_URL}/api/assets/${id}`;
+    const url = `${process.env.REACT_APP_API_BASE_URL}/api/assets/${serial_number}`;
     const data = {
       product_category_id: selectedProductCategory,
       product_type_id: selectedProductType,
@@ -119,9 +121,9 @@ const EditAsset = ({ sidebarOpen }) => {
       asset_name: assetName,
       price: price,
       location_id: selectedLocation,
-      purchase_id: purchaseDate,
+      purchase_date: purchaseDate,
       warranty_expiry_date: warrantyExpiryDate,
-      purchase_type_id: selectedPurchaseType,
+      purchase_type: selectedPurchaseType,
       description: description,
       serial_number: serial_number
     };
@@ -138,7 +140,7 @@ const EditAsset = ({ sidebarOpen }) => {
         throw new Error("Network response was not ok.");
       }
       console.log("Asset updated successfully");
-      navigate('/home/addlist');
+      navigate('/addlist');
     } catch (error) {
       console.error("Error updating asset data:", error);
     }

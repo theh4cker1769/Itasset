@@ -29,7 +29,6 @@ import Edit_Vendor from "./components/Vendors/Edit_Vendor";
 import EditProduct from "./components/Product/EditProduct"
 import EditAsset from "./components/Home/Assets/EditAsset";
 import Nopage from "./components/Nopage";
-import AssignAsset from "./components/Home/Assets/AssignAsset";
 import AssignAssetEdit from "./components/Home/Assets/AssignAssetEdit";
 import AssignAssetList from "./components/Home/Assets/AssignAssetList";
 import AssignListShow from "./components/Home/Assets/AssignListShow";
@@ -37,10 +36,15 @@ import NewPurchase from "./components/Home/NewPurchase/NewPurchase";
 import NewSubscription from "./components/Home/NewPurchase/NewSubscription";
 import LoginNew from "./components/Devise/LoginNew";
 import ViewAssignAsset from "./components/Home/Assets/ViewAssignAsset";
+import AssignAssets from "./components/Home/Assets/AssignedAssets/AssignAssets";
+import AssignAssetsAdd from "./components/Home/Assets/AssignedAssets/AssignAssetsAdd";
+import EditAssignedAssets from "./components/Home/Assets/AssignedAssets/EditAssignedAssets";
+import ReturnAssignedAssets from "./components/Home/Assets/AssignedAssets/ReturnAssignedAssets";
+import ReturnedAssets from "./components/Home/Assets/AssignedAssets/ReturnedAssets";
+import RepairAssignedAssets from "./components/Home/Assets/AssignedAssets/RepairAssignedAssets";
+import RepairAssets from "./components/Home/Assets/AssignedAssets/RepairAssets";
 
 const isAuthenticated = () => {
-  // Implement your authentication logic here.
-  // Return true if the user is authenticated, else return false.
   return localStorage.getItem("authToken") !== null; // Example check based on your storage
 };
 
@@ -94,9 +98,17 @@ function App() {
           <Route path="/vendordetails/:id" element={localStorage.getItem("authToken")  ? (<Layout><Vendor_details/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/employees/:id" element={localStorage.getItem("authToken") ? (<Layout><EditEmployee/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/location/edit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><EditLocation/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
-          <Route path="/editproduct/:id" element={<Layout><EditProduct/></Layout>}/>
+          <Route path="/editproduct/:id" element={localStorage.getItem("authToken")  ? <Layout><EditProduct/></Layout> : (<Navigate replace to={"/login"}/>)}/>
           <Route path="/editasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><EditAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
-          <Route path="/assignasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          {/* Assigned Assets */}
+          <Route path="/assign-asset-add"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetsAdd/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/assignassets"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssets/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/editassignedasset/:id" element={localStorage.getItem("authToken")  ? (<Layout><EditAssignedAssets/></Layout>) : (<Navigate replace to={"/login"}/>)} />
+          <Route path="/returnassignedasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><ReturnAssignedAssets/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/returnedassets" element={localStorage.getItem("authToken")  ? (<Layout><ReturnedAssets/></Layout>) : (<Navigate replace to={"/login"}/>)} />
+          <Route path="/repairassignedasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><RepairAssignedAssets/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+          <Route path="/repairassets"  element={localStorage.getItem("authToken")  ? (<Layout><RepairAssets/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
+
           <Route path="/viewassignasset/:id"  element={localStorage.getItem("authToken")  ? (<Layout><ViewAssignAsset/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignedit/:id"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetEdit/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
           <Route path="/assignlist/"  element={localStorage.getItem("authToken")  ? (<Layout><AssignAssetList/></Layout>) : (<Navigate replace to={"/login"}/>)}  />
