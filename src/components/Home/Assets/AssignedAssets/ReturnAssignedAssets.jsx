@@ -126,7 +126,7 @@ const ReturnAssignedAssets = () => {
                 throw new Error("Network response was not ok");
             }
             const responseData = await response.json();
-            await handleDelete(params.id)
+            await handleUpdateReturn(params.id)
             navigate("/returnedassets");
         } catch (error) {
             console.error("Error adding asset:", error);
@@ -135,10 +135,9 @@ const ReturnAssignedAssets = () => {
     };
 
     // Assigned Asset Delete 
-    const handleDelete = async (id) => {
+    const handleUpdateReturn = async (id) => {
         try {
-            await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/assigned-assets/${id}`, { method: 'DELETE' });
-            setAssignedAssets(assignedAssets.filter(asset => asset.assignassets_id !== id));
+            await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/update-return/${id}`, { method: 'PUT' });
         }
         catch (error) {
             console.error(error);

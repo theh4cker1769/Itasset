@@ -193,8 +193,16 @@ const AssignAssets = ({ sidebarOpen }) => {
                                             <td>{v.description}</td>
                                             <td>{v.assign_date.slice(0, 10)}</td>
                                             <td>
-                                                <Link to={`/returnassignedasset/${v.assignassets_id}`}><button className='btn btn-warning'>Return</button></Link> &nbsp;
-                                                <Link to={`/repairassignedasset/${v.assignassets_id}`}><button className='btn btn-danger'>Repair</button></Link> 
+                                                {v.status ?
+                                                    <>
+                                                        {v.status}
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Link to={`/returnassignedasset/${v.assignassets_id}`}><button className='btn btn-warning'>Return</button></Link> &nbsp;
+                                                        <Link to={`/repairassignedasset/${v.assignassets_id}`}><button className='btn btn-danger'>Repair</button></Link>
+                                                    </>
+                                                }
                                             </td>
                                             <td>
                                                 <div style={{ color: "#0d6efd" }}>
