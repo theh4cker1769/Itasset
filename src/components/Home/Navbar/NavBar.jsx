@@ -105,7 +105,7 @@ const Navbar = () => {
                   {adminImageFetch ?
                     <img src={adminImageFetch} alt="Admin Avatar" className="header-img"/>
                     :
-                    <img src={profile} alt="Admin Avatar" style={{ cursor: 'pointer', width: "100%" }} />
+                    <img src={profile} alt="Admin Avatar" className="header-img"/>
                   }
                 </a>
               </li>

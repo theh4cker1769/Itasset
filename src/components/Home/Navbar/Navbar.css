@@ -1,91 +1,109 @@
-.logo-img{
+.logo-img {
     margin-top: 5px;
 }
-#menu_icon_navbar{
+
+#menu_icon_navbar {
     font-size: 33px;
     cursor: pointer;
     font-weight: bolder;
     margin-top: 10px;
 }
+
 /* #nav-container-fluid{
     line-height: 45px;
 } */
-.username_navbar{
+.username_navbar {
     margin-top: 5px;
     font-weight: 500;
     font-size: 17px;
 }
-.profile-img{
+
+.profile-img {
     width: 46px;
     border: none;
     border-radius: 25px;
 }
-#bell-nav{
+
+#bell-nav {
     cursor: pointer;
 }
-#ul-navbar{
+
+#ul-navbar {
     list-style-type: none;
-    display:flex;
-    justify-content:end;
-    gap: 1.2rem;  
+    display: flex;
+    justify-content: end;
+    gap: 1.2rem;
 }
-#navbarDropdown{
+
+#navbarDropdown {
     margin-top: 0px;
     font-size: 15px;
     padding: 0;
-  }
-.logout-navbar{
+}
+
+.logout-navbar {
     margin: 0;
     color: black;
     border-radius: 3px;
 }
-#drop-menu{
+
+#drop-menu {
     color: black;
 }
-.bell_icon_navbar{
+
+.bell_icon_navbar {
     margin-top: 4px;
     font-size: 20px;
-} 
-.userclr{
+}
+
+.userclr {
     color: black;
     margin-left: -5px;
-  }
-  #dropdown-logout{
+}
+
+#dropdown-logout {
     padding: 5px 0px;
-  }
- 
+}
+
 @media screen and (max-width: 480px) {
-    .logo-img{
+    .logo-img {
         width: 130px;
         height: 50px;
     }
-    .logout-navbar{
+
+    .logout-navbar {
         padding: 8px 4px;
         font-size: 12px;
     }
-    .profile-img{
+
+    .profile-img {
         width: 43px;
         border: none;
         border-radius: 25px;
     }
-    #ul-navbar{
-        display:flex;
-        justify-content:center;
+
+    #ul-navbar {
+        display: flex;
+        justify-content: center;
         padding: 0;
     }
-    .row{
+
+    .row {
         margin: 0;
     }
-    .bell_icon_navbar{
+
+    .bell_icon_navbar {
         margin-top: 7px;
     }
-    .username_navbar{
-        margin:5px;
+
+    .username_navbar {
+        margin: 5px;
         font-weight: 500;
         font-size: 13px;
     }
-  }
+}
 
 .header-img {
     width: 40px;
- }
+    cursor: pointer;
+}
