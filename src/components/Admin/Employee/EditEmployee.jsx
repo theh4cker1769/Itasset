@@ -126,7 +126,7 @@ const EditEmployee = ({ sidebarOpen }) => {
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="#">Employee ID</label><br />
-                                    <input type="text" className="form-control" value={employee_id} onChange={(e) => setEmployee_id(e.target.value)} />
+                                    <input type="text" className="form-control" value={employee_id} onChange={(e) => setEmployee_id(e.target.value)} disabled/>
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="#">Phone</label><br />

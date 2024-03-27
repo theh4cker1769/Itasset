@@ -76,7 +76,7 @@ const Dashboard = ({ sidebarOpen }) => {
           <hr />
 
           <div className="container-fluid">
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-12" id="loc">
                 <center>
                   <p>
@@ -87,7 +87,7 @@ const Dashboard = ({ sidebarOpen }) => {
                   </p>
                 </center>
               </div>
-            </div>
+            </div> */}
 
             <div className="row">
               <div className="col-md-3 col-sm-6 col-12">
