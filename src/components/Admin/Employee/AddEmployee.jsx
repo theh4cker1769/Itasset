@@ -16,6 +16,7 @@ const AddEmployee = ({ sidebarOpen }) => {
     const [reporting_manager, setreportManager] = useState("");
     const [department, setDepartment] = useState();
     const [employeeName, setEmployeeName] = useState([])
+    const [employee_designation, setEmployeeDesignation] = useState("");
     const navigate = useNavigate();
     const [departmentData, setDepartmentData] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -101,6 +102,7 @@ const AddEmployee = ({ sidebarOpen }) => {
                     email: email,
                     phone: phone,
                     employee_id_number: employee_id,
+                    designation: employee_designation,
                     location: location,
                     reporting_manager: reporting_manager,
                     department_id: department,
@@ -115,6 +117,7 @@ const AddEmployee = ({ sidebarOpen }) => {
                 setEmployee_id("");
                 setPhone("");
                 setLocation("");
+                setEmployeeDesignation("");
                 setreportManager("");
                 setDepartment("")
                 alert("Data add sucessfully!");
@@ -151,6 +154,11 @@ const AddEmployee = ({ sidebarOpen }) => {
                                     <div className="col-md-6">
                                         <label >Employee ID<span style={{ color: "red" }}> *</span></label><br />
                                         <input type="text" className="form-control" value={employee_id} onChange={(e) => setEmployee_id(e.target.value)} />
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <label >Designation<span style={{ color: "red" }}> *</span></label><br />
+                                        <input type="text" className="form-control" value={employee_designation} onChange={(e) => setEmployeeDesignation(e.target.value)} />
                                     </div>
 
                                     <div className="col-md-6">

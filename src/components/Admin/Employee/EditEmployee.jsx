@@ -7,6 +7,7 @@ const EditEmployee = ({ sidebarOpen }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [employee_id, setEmployee_id] = useState("");
+    const [designation, setDesignation] = useState("");
     const [phone, setPhone] = useState("");
     const [location, setLocation] = useState();
     const [reportManager, setReportManager] = useState("");
@@ -70,6 +71,7 @@ const EditEmployee = ({ sidebarOpen }) => {
                 setName(employeeData.data[0].name);
                 setEmail(employeeData.data[0].email);
                 setEmployee_id(employeeData.data[0].employee_id)
+                setDesignation(employeeData.data[0].designation)
                 setPhone(employeeData.data[0].phone)
                 setLocation(employeeData.data[0].location)
                 setReportManager(employeeData.data[0].reporting_manager)
@@ -96,7 +98,7 @@ const EditEmployee = ({ sidebarOpen }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    name, email, employee_id, phone, location_id: location, reportManager, department_id: department
+                    name, email, employee_id, phone, location_id: location, reportManager, department_id: department, designation
                 }),
             });
             if (!response.ok) {
@@ -127,6 +129,10 @@ const EditEmployee = ({ sidebarOpen }) => {
                                 <div className="col-md-6">
                                     <label htmlFor="#">Employee ID</label><br />
                                     <input type="text" className="form-control" value={employee_id} onChange={(e) => setEmployee_id(e.target.value)} disabled/>
+                                </div>
+                                <div className="col-md-6">
+                                    <label htmlFor="#">Designation</label><br />
+                                    <input type="text" className="form-control" value={designation} onChange={(e) => setDesignation(e.target.value)}/>
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="#">Phone</label><br />

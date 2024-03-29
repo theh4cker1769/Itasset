@@ -32,7 +32,7 @@ const Location = ({ sidebarOpen }) => {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/get-locations?user_id=${userID}&company_id=${companyID}`);
         const data = await response.json();
         setData(data.data);
-      } catch (error) { 
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
@@ -48,28 +48,40 @@ const Location = ({ sidebarOpen }) => {
         }
       );
 
-      if (response.ok) {
-        setData((prevData) => prevData.filter((item) => item.id !== itemId));
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error deleting data:", errorData);
+        if (response.status === 409) {
+          alert("Location is used somewhere. Cannot delete this location.");
+        } else {
+          alert("An error occurred. Please try again.");
+        }
       } else {
+        const data = await response.json();
+        console.log(data, 'data');
+        setData((prevData) => prevData.filter((item) => item.location_id !== itemId));
       }
-    } catch (error) { }
-    window.location.reload();
+    } catch (error) {
+      console.error("An error occurred:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
-  useEffect(() => {
-    if (data) {
-      const cityUrl = `https://apis.itassetmgt.com:8443/api/v1/cities/${data.city_id}`;
-      fetch(cityUrl)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error("Network response was not ok.");
-        })
-        .then((response) => setCityName(response.city_name))
-        .catch(() => setCityName("N/A"));
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     const cityUrl = `https://apis.itassetmgt.com:8443/api/v1/cities/${data.city_id}`;
+  //     fetch(cityUrl)
+  //       .then((response) => {
+  //         if (response.ok) {
+  //           return response.json();
+  //         }
+  //         throw new Error("Network response was not ok.");
+  //       })
+  //       .then((response) => setCityName(response.city_name))
+  //       .catch(() => setCityName("N/A"));
+  //   }
+  // }, [data]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -226,8 +238,8 @@ const Location = ({ sidebarOpen }) => {
                     aria-live="polite"
                   >
                     {`Showing ${indexOfFirstItem + 1} to ${indexOfLastItem > filterLocations.length
-                        ? filterLocations.length
-                        : indexOfLastItem
+                      ? filterLocations.length
+                      : indexOfLastItem
                       } of ${filterLocations.length} entries`}
                   </div>
                 </div>

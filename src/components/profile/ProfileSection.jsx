@@ -58,6 +58,7 @@ const ProfileSection = ({ sidebarOpen }) => {
   }, [selectedImage]);
 
   //  Profile Image Upload
+  const [profileImageUpload, setProfileImageUpload] = useState();
   const profileUpload = async () => {
     const formData = new FormData();
     formData.append('image', selectedImage);
@@ -71,11 +72,19 @@ const ProfileSection = ({ sidebarOpen }) => {
       });
 
       const data = await response.json();
+      setProfileImageUpload(data);
       console.log('File upload success:', data);
     } catch (error) {
       console.error('File upload error:', error);
     }
   }
+
+  useEffect(() => {
+    if (profileImageUpload) {
+      profileImage();
+    }
+  }, [profileImageUpload]);
+
 
   // profileImage
   const [adminImageFetch, setAdminImageFetch] = useState();

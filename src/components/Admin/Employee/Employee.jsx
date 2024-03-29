@@ -208,6 +208,7 @@ const Employee = ({ sidebarOpen }) => {
                     <th className="sorting">Employee ID </th>
                     <th className="sorting">Name</th>
                     <th className="sorting">Email</th>
+                    <th className="sorting">Designation</th>
                     <th className="sorting" >Contact Number</th>
                     <th className="sorting" >Location</th>
                     <th className="sorting"> Department</th>
@@ -223,6 +224,7 @@ const Employee = ({ sidebarOpen }) => {
                       <td>{item.employee_id}</td>
                       <td>{item.name}</td>
                       <td>{item.email}</td>
+                      <td>{item.designation}</td>
                       <td>{item.phone}</td>
                       <td>{getLocation(item.location)}</td>
                       <td>{getDepartment(item.department_id)}</td>

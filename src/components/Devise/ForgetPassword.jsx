@@ -62,7 +62,7 @@ const ForgetPassword = () => {
     };
 
     axios
-      .post("https://apis.itassetmgt.com:8443/api/v1/password_resets", data)
+      .post(`${process.env.REACT_APP_API_BASE_URL}/api/forgetpassword`, data)
       .then((response) => {
         setResetMessage("Password reset successful!");
         navigate("/login");

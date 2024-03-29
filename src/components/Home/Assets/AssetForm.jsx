@@ -225,6 +225,7 @@ const AssetForm = ({
             className="form-control"
             value={serial_number}
             onChange={(e) => setSerialNumber(e.target.value)}
+            disabled={serial_number ? true : false}
           />
         </div>
       </div>

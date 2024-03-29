@@ -74,7 +74,7 @@ const ReturnAssignedAssets = () => {
         selectedAssetId: "",
         selectedEmployeeId: "",
         return_description: "",
-        return_date: new Date().toISOString().slice(0, 10),
+        return_date: "",
     });
 
     const handleInputChange = (e) => {

@@ -66,7 +66,7 @@ const AddList = ({ sidebarOpen }) => {
         body: JSON.stringify({ status: newStatus }),
       });
       setAssets((prevAssets) =>
-        prevAssets.map((asset) => (asset.asset_id === id ? { ...asset, is_active: newStatus } : asset))
+        prevAssets.map((asset) => (asset.serial_number === id ? { ...asset, is_active: newStatus } : asset))
       );
     } catch (error) {
       console.error(error);
@@ -378,7 +378,7 @@ const AddList = ({ sidebarOpen }) => {
                         <td>{getLocations(asset.address)}</td>
                         <td>
                           <div className="form-check form-switch switch-align">
-                            <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.asset_id}`} onChange={() => handleToggle(asset.asset_id, !asset.is_active)} />
+                            <input className="form-check-input" type="checkbox" checked={asset.is_active} id={`toggleSwitch-${asset.serial_number}`} onChange={() => handleToggle(asset.serial_number, !asset.is_active)} />
                           </div>
                         </td>
                         {/* <td>

@@ -74,7 +74,7 @@ const RepairAssignedAssets = () => {
         selectedAssetId: "",
         selectedEmployeeId: "",
         repair_description: "",
-        repair_date: new Date().toISOString().slice(0, 10),
+        repair_date: "",
     });
 
     const handleInputChange = (e) => {
