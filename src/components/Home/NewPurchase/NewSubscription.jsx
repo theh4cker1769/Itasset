@@ -46,7 +46,7 @@ const NewSubscription = ({ sidebarOpen }) => {
     }
 
     // purchase date
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState();
     const handleDate = (date) => {
         let timezoneOffset = date.getTimezoneOffset() * 60000; 
         let adjustedDate = new Date(date.getTime() - timezoneOffset);

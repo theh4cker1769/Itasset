@@ -13,37 +13,27 @@ const Dashboard = ({ sidebarOpen }) => {
   const [totalEmployee, setTotalEmployee] = useState(0);
   const [totalAsset, setTotalAsset] = useState(0);
   const [totalCostAsset, setTotalCostAsset] = useState(0);
-  const [graphData, setGraphData] = useState([]);
 
-  const fetchData = async (url, setDataFunction) => {
-    try {
-      const response = await axios.get(url);
-      setDataFunction(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const userID = localStorage.getItem("userID");
+  // const userID = localStorage.getItem("userID");
+  const companyID = localStorage.getItem("companyID");
 
   useEffect(() => {
     const fetchDataForGraph = async () => {
       try {
-        const totalData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/total/${userID}`);
-        const costAssetsResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/totalprice/${userID}`);      
+        const costAssetsResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/totalprice/${companyID}`);  
+        const totalData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/total/${companyID}`);
+
+        const costAssets = await costAssetsResponse.data.GetTotalPrice;
+        const totalVendors = await totalData.data.data[0].total_vendors;
+        const totalEmployee = await totalData.data.data[0].total_employees;
+        const totalAsset = await totalData.data.data[0].total_assets;
 
         setTotalVendors(totalData.data.data[0].total_vendors);
         setTotalEmployee(totalData.data.data[0].total_employees);
         setTotalAsset(totalData.data.data[0].total_assets);
-        setTotalCostAsset(costAssetsResponse.data.GetTotalPrice);
+        setTotalCostAsset(costAssets);
 
-        const formattedGraphData = processDataForGraph(
-          totalData.data.data[0].total_vendors,
-          totalData.data.data[0].total_vendors,
-          totalData.data.data[0].total_vendors,
-          costAssetsResponse.data.GetTotalPrice
-        );
-        setGraphData(formattedGraphData);
+
       } catch (error) {
         console.error("Error fetching graph data:", error);
       }
@@ -52,15 +42,7 @@ const Dashboard = ({ sidebarOpen }) => {
     fetchDataForGraph();
   }, []);
 
-  const processDataForGraph = (vendors, employees, assets, costAssets) => {
-    const processedData = [
-      { x: vendors, y: employees },
-      { x: assets, y: costAssets },
-      // Add more data points as needed based on your requirements
-    ];
-
-    return processedData;
-  };
+  console.log("Total Vendors:", totalCostAsset);
 
   return (
     <main id="main" className={`main-content ${sidebarOpen ? "shift-right" : ""}`}>
